@@ -1,15 +1,16 @@
 import { createHash, randomUUID } from 'node:crypto';
 import type { Pool, PoolClient } from 'pg';
-import { issueOAuthState, BlingError, exchangeToken, type BlingToken } from '../bling/transport';
-import { encryptSecret, decryptSecret } from '../security/token-vault';
-import type { OwnerAllowlist } from '../security/owner-identity';
+import { issueOAuthState, BlingError, exchangeToken, type BlingToken } from '../bling/transport.ts';
+import { encryptSecret, decryptSecret } from '../security/token-vault.ts';
+import type { OwnerAllowlist } from '../security/owner-identity.ts';
 
 type SqlClient = Pick<Pool, 'query'> | Pick<PoolClient, 'query'>;
 const hash = (value: string) => createHash('sha256').update(value, 'utf8').digest();
 const aad = (ownerId: string, field: 'access'|'refresh') => `bling:owner:${ownerId}:primary:${field}`;
 export class StoreError extends Error {
-  constructor(public readonly code: 'STATE_REJECTED'|'CONNECTION_MISSING'|'NOT_CONNECTED') {
-    super(code); this.name = 'StoreError';
+  readonly code: 'STATE_REJECTED'|'CONNECTION_MISSING'|'NOT_CONNECTED';
+  constructor(code: 'STATE_REJECTED'|'CONNECTION_MISSING'|'NOT_CONNECTED') {
+    super(code); this.code = code; this.name = 'StoreError';
   }
 }
 
