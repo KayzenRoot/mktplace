@@ -1,8 +1,22 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 mkdir -p artifacts
-export ALLOW_PUBLIC_DEMO=true
 export NODE_ENV=production
+# Verify that unauthenticated production routes fail closed when demo mode is not enabled.
+env -u ALLOW_PUBLIC_DEMO ./node_modules/.bin/next start -p 3101 >/tmp/mktplace-closed.log 2>&1 &
+closed_pid=$!
+for i in $(seq 1 40); do
+  result=$(curl -sS -o /dev/null -w '%{http_code}' http://127.0.0.1:3101/ 2>/dev/null || true)
+  if [[ "$result" != "000" && -n "$result" ]]; then break; fi
+  sleep 1
+done
+test "${result:-}" = "404" || { echo "FAIL: production demo endpoint returned ${result:-unknown} instead of 404" >&2; kill "$closed_pid" 2>/dev/null || true; exit 1; }
+test "$(curl -sS -o /dev/null -w '%{http_code}' http://127.0.0.1:3101/settings/integrations)" = "404"
+kill "$closed_pid" 2>/dev/null || true
+wait "$closed_pid" 2>/dev/null || true
+
+# Launch isolated demo preview to inspect visual structure without connecting accounts.
+export ALLOW_PUBLIC_DEMO=true
 npm run start >/tmp/mktplace-preview.log 2>&1 &
 server_pid=$!
 trap 'kill "$server_pid" 2>/dev/null || true' EXIT
@@ -20,5 +34,6 @@ if [[ -z "$chrome" ]]; then echo 'Chrome not installed on runner' >&2; exit 1; f
 "$chrome" --headless --no-sandbox --disable-dev-shm-usage --disable-gpu --hide-scrollbars --no-first-run --screenshot=artifacts/dashboard-desktop.png --window-size=1440,900 http://127.0.0.1:3000/ >/tmp/chrome-dashboard.log 2>&1
 "$chrome" --headless --no-sandbox --disable-dev-shm-usage --disable-gpu --hide-scrollbars --no-first-run --screenshot=artifacts/integrations-desktop.png --window-size=1440,900 http://127.0.0.1:3000/settings/integrations >/tmp/chrome-integrations.log 2>&1
 "$chrome" --headless --no-sandbox --disable-dev-shm-usage --disable-gpu --hide-scrollbars --no-first-run --screenshot=artifacts/dashboard-mobile.png --window-size=390,844 --force-device-scale-factor=1 http://127.0.0.1:3000/ >/tmp/chrome-mobile.log 2>&1
+"$chrome" --headless --no-sandbox --disable-dev-shm-usage --disable-gpu --hide-scrollbars --no-first-run --screenshot=artifacts/integrations-mobile.png --window-size=390,844 --force-device-scale-factor=1 http://127.0.0.1:3000/settings/integrations >/tmp/chrome-integrations-mobile.log 2>&1
 for screenshot in artifacts/*.png; do test -s "$screenshot" || exit 1; done
 printf '%s\n' 'Visual snapshots and SSR smoke succeeded (demo only).'
