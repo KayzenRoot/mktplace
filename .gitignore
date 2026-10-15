@@ -24,3 +24,5 @@ playwright/.auth/
 **/auth-state*.json
 supplier-snapshots/
 supplier-data/
+
+artifacts/

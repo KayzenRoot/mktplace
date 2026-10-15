@@ -5,6 +5,8 @@ on:
       - 'app/**'
       - 'src/**'
       - 'tests/**'
+      - 'e2e/**'
+      - 'playwright.config.ts'
       - 'package.json'
       - 'package-lock.json'
       - 'tsconfig.json'
@@ -41,5 +43,21 @@ jobs:
         run: npm run build
         env:
           NODE_ENV: production
+      - name: Install Chromium for visual checks
+        run: npx playwright install --with-deps chromium
+      - name: Browser E2E (desktop and mobile)
+        run: npm run e2e
+        env:
+          CI: 'true'
+      - name: Export visual evidence and dependency lock
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: wo-blg-001-visual-and-lock
+          path: |
+            artifacts/
+            package-lock.json
+          retention-days: 7
+          if-no-files-found: warn
       - name: Dependency audit
         run: npm audit --omit=dev --audit-level=high
