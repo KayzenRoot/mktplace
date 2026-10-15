@@ -1,0 +1,45 @@
+name: UI Foundation
+on:
+  pull_request:
+    paths:
+      - 'app/**'
+      - 'src/**'
+      - 'tests/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'tsconfig.json'
+      - 'next.config.ts'
+      - 'eslint.config.mjs'
+      - '.github/workflows/ui-foundation.yml'
+  push:
+    branches: [main]
+permissions:
+  contents: read
+concurrency:
+  group: ui-foundation-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install pinned direct dependencies (lockfile pending)
+        run: npm install --ignore-scripts --no-fund
+      - name: Lint
+        run: npm run lint
+      - name: Typecheck
+        run: npm run typecheck
+      - name: Tests
+        run: npm test
+      - name: Production build
+        run: npm run build
+        env:
+          NODE_ENV: production
+      - name: Dependency audit
+        run: npm audit --omit=dev --audit-level=high
