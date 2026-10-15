@@ -52,3 +52,17 @@ O sistema deve suportar fornecedor com múltiplas variantes e SKU distintos; nã
 
 ## Fonte específica BeHot
 Análise de conteúdo público em 2026-10-15 documentada em [`19-BEHOT-PUBLIC-DISCOVERY.md`](./19-BEHOT-PUBLIC-DISCOVERY.md). Sinais como 'última peça' ou 'esgotado' refletem momento da página e não SLA, reserva confirmada, quantidade confiável nem atualização em tempo real.
+
+## Descoberta de operação comercial (foto autenticada, 2026-10-15)
+O proprietário confirmou operação de venda **sob demanda**, com possibilidade de compra online e retirada local no mesmo dia. Seu objetivo não é gerir quantidade real da BeHot (ela não aparece), e sim manter catálogo ofertável enquanto há sinal de disponibilidade.
+Foto recebida **não foi armazenada no GitHub**. Exibe como exemplo Massageador Peridell Pink, preço R$178,63, preço Pix R$151,84, três parcelas de R$59,54, botão `COMPRAR` visível e campo de seleção `QUANTIDADE=1` por padrão. Esse número é quantidade solicitada pelo comprador e **não representa estoque do fornecedor**. Tampouco prova reserva ou estoque ilimitado. Preços e disponibilidade variam.
+### Política para publicação futura
+- Primeiro monitorar produto/variante e disponibilidade; não inferir estoque pela mera existência do botão (ele é sinal a validar).
+- Proposta conservadora **no máximo 1 unidade virtual por SKU/variante** para vendas simultâneas, apenas se mecanismo oficial Bling/canais aceitar a semântica comercial sem adulterar o saldo físico; não lançar `1` como estoque próprio.
+- Ao receber pedido, registrar hold e iniciar processo de compra/retirada no fornecedor; pausar/reconciliar anúncio até nova verificação. Sincronização Bling-marketplaces é eventualmente consistente e pode permitir pedidos concorrentes; não há garantia absoluta.
+- Em indisponibilidade confirmada, pausar anúncio/oferta; em falha de consulta ou snapshot vencido, usar modo seguro conforme política aprovada e alertar, sem declarar saldo físico zero.
+- Antes de publicar anúncios, verificar políticas de cada marketplace para itens de categoria adulta; cada canal tem regras próprias.
+- Preço final ao comprador deve considerar preço BeHot aplicável à modalidade de pagamento, taxas dos canais, impostos, logística/retirada e margem; parcela e desconto Pix não são automaticamente preço de custo garantido.
+- Frequência proposta: coleta geral a cada 4h e, se permitida, priorização de produtos ofertados a cada 60 min. Retirada no mesmo dia é capacidade do proprietário, não garantia contratual de reposição do fornecedor.
+### Dependências de aceite
+Confirmar o que acontece quando produto esgota (sinal específico por variante), publicação de quantidade virtual sem efeitos contábeis, SLA operacional e como tratar duas vendas quase simultâneas.

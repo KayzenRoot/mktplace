@@ -23,3 +23,11 @@ Product/Order/Stock/Invoice/Payable/Receivable cache tables só nas próprias WO
 - `supplier_change`: before/after safe fields, detected_at, resolved_at, review/status, reconciliation_id.
 - `bling_writeback_job`: approved_policy_id, dry_run, idempotency_key, target product, proposed change, final_status, audit reference (WO-BLG-010 somente).
 Unidade e precisão: decimal para preço; status desconhecido não equivale a quantidade zero; chave externa única por fornecedor+variante; PII mínima e retenção definida na WO.
+
+## Política comercial FUTURA, não criar durante WO-BLG-001
+- `supplier_snapshot`: status com `available_signal/unavailable_confirmed/unknown`, variant unique key, capture_method, evidence_confidence, checked_at, expires_at. Coluna qty pode ser nula; input `1` em campo de compra não é estoque real.
+- `virtual_offer_policy`: bling_sku, channel, enabled, exposure_limit (default proposta 1), freshness_ttl, fulfilment_sla, pause_when_unknown, updated_by.
+- `virtual_offer_state`: sku+channel, last_published_qty, pending_change_id, last_bling_ack_at; **nunca** somar ao estoque físico.
+- `supplier_fulfilment_hold`: bling_order_id/channel_order_id unique, sku+variant, reserved_at, status (held/awaiting_supply/collected/released/escalated), optimistic_version.
+- `cost_reference`: supplier price, payment_method, observed_at, taxes_and_fees (quando conhecidos), avoid auto-pricing if incomplete.
+Concurrência: unique active hold por SKU/variante para limite 1; integração multicanal deve reconciliar possíveis corridas externas.

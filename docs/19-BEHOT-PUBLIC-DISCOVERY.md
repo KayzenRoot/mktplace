@@ -40,3 +40,9 @@ https://developer.bling.com.br/aplicativos
 
 ## STOP
 Somente descoberta pública documentada nesta revisão. NÃO executar scraping recorrente, fazer login no fornecedor, pedir/usar senhas ou alterar Bling. A WO-BLG-001 continua focada em conexão OAuth do Bling.
+
+## Evidência adicional fornecida pelo Owner (2026-10-15)
+Screenshot de sessão autenticada na página de `Massageador Peridell Pink`: preço anunciado R$178,63, Pix R$151,84, 3x R$59,54, 15% de desconto Pix, campo `QUANTIDADE` inicialmente com `1` e botão `COMPRAR` ativo.
+**Interpretação segura:** `QUANTIDADE=1` indica seleção para compra, não inventário. `COMPRAR` ativo é sinal plausível de oferta, não confirmação de que há mais unidades nem garantia de cumprimento no momento da futura venda. O portal não mostra saldo absoluto nesta evidência.
+**Privacidade:** screenshot **não publicada** no repo, pois inclui dados incidentais de navegação pessoal. Apenas campos comerciais mínimos acima foram transcritos.
+**Necessidade:** captar mudança de ofertabilidade, não descobrir quantidades; comercializar sob demanda e retirar no mesmo dia. Definição formal em ADR-011 / `18-SUPPLIER-MONITORING.md`.

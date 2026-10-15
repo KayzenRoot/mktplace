@@ -10,8 +10,8 @@
 | WO-BLG-006 | IMPORTANT | 0.6 | webhooks assinados, inbox, dedupe, reconcile | 005 APPROVED |
 | WO-BLG-007 | FUTURE | 0.7 | escritas de produtos/pricing com dry-run/auditoria | ordem e escopos aprovados |
 | WO-BLG-008 | FUTURE | >=0.8 | automações, alertas e financeiro/fiscal com aprovação | auditoria reforçada |
-| WO-BLG-009 | IMPORTANT | após 002 | monitor de fornecedor autenticado, coleta read-only e conciliação catálogo | 002 APPROVED; URL+termos e credenciais via cofre |
-| WO-BLG-010 | IMPORTANT | após 007 e 009 | alterações controladas na disponibilidade comercial Bling a partir do fornecedor | 007 e 009 APPROVED; política estoque e writeback auditadas |
+| WO-BLG-009 | IMPORTANT | após 002 | monitor BeHot de sinais de disponibilidade por variante e conciliação read-only | 002 APPROVED; URL+termos e credenciais via cofre |
+| WO-BLG-010 | IMPORTANT | após 007 e 009 | publicação sob demanda (sem estoque físico), reserva pós-venda e atualização comercial segura | 007 e 009 APPROVED; política estoque e writeback auditadas |
 ## Política
 Somente iniciar próxima WO depois da anterior APPROVED e checkpoint sincronizado. Itens IMPORTANT não entram automaticamente na WO corrente.
 Fazer apenas incremento NECESSARY para satisfazer DoD, sem reescrever tecnologia desnecessariamente.

@@ -19,3 +19,5 @@ Status da evidência: **TODO** em todas as linhas, não comprovar testes fictíc
 
 | RF-014..016, RNF-008..010 | WO-BLG-009 | testes de login mock, DOM, sessão, segurança e conciliação; AINDA NÃO EXECUTADOS |
 | RF-017 | WO-BLG-010 | dry-run, idempotência, revisão de diffs e auditoria escrita; AINDA NÃO EXECUTADOS |
+
+| RF-018..022 RNF-011..012 | WO-BLG-009/010 (future) | fixture botão Comprar vs estoque desconhecido, reserva concorrente multicanal, freeze stale, virtual vs físico, margens e compliance; PENDING |

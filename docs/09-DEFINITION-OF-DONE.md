@@ -20,3 +20,6 @@ CORRECTION REQUIRED -> somente Correction Delta no mesmo PR; BLOCKED -> não ava
 Contrato/site específico revisado; coleta permitida; login/sessão por cofre; nenhuma credencial no repo/CI; fixtures de login e HTML; mapeamentos inequívocos; estados unknown/unavailable separados; evidências de execução sem PII. Operação comercial permanece apenas leitura nesta WO.
 ## Sync fornecedor -> Bling (WO-BLG-010, futura)
 Exigir catálogo estável, política escrita aprovada, comparação de SKUs/variantes, preview/dry-run, confirmação de proprietario ou regra explicitamente autorizada, atualização idempotente, rollback/reconciliação, logs não sensíveis e nenhuma alteração em estoque físico devido a ausência de dados do fornecedor.
+
+## Validação específica da venda sem estoque físico
+Sem evidência explícita de suporte e testes de campo virtual separado no Bling + marketplace, bloquear qualquer sincronização de quantidade; exigir estratégia alternativa autorizada. Para cada SKU/variante: sinal atual com timestamp e confidence, política de exposição <=1 proposta, parada ante stale/error, reserva pós-venda, revisão manual de indisponibilidade, economicidade validada e compliance por canal. Não afirmar prevenção total de oversell sem confirmação de sincronização multicanal.

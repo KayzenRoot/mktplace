@@ -27,3 +27,9 @@ Revogar instalações/tokens no Bling; rotacionar Client Secret/KEY, invalidar s
 - Log seguro: registrar apenas `supplier_id`, timestamp, contagem, changed products e status/error code; sem HTML inteiro, nome de cliente, senha, cabeçalhos ou cookies.
 - Proteção site não é erro para quebrar: ao surgir challenge/403/429/termos incompatíveis, suspender e pedir recuperação interativa autorizada. Backoff/circuit breaker.
 - Sem writeback automático por scrape falho. Mapeamento ambíguo/variante faltando/estoque externo não confiável implica revisão humana. Testar efeitos em catálogo/marketplace antes de ativar qualquer atualização.
+
+## Falhas operacionais de estoque sob demanda
+- Race condition na venda multicanal: reservation hold transacional; não prometer sincronismo em tempo real do marketplace.
+- Não alterar estoque físico por parsing de disponibilidade: escrever somente pela camada de writeback com prévia, escopo e prova de semântica do campo Bling/canal.
+- A página privada do Owner pode conter CEP e dados pessoais. **NÃO arquivar print do usuário, HTML autenticado nem traces no repositório público**, inclusive em revisão.
+- Compras/checkout automático na BeHot fora do escopo; sem armazenar dados de pagamento do proprietário.

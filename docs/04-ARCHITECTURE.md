@@ -43,3 +43,12 @@ Approved scheduler (hour(s) interval, adjustable)
 ```
 Não rodar browser headless em request interativo Next.js nem na WO-001. Jobs GitHub Actions agendados são opção de baixo custo para protótipo, não scheduler com SLA: podem atrasar ou ser desabilitados por inatividade (60 dias em repo público). Workflow com credenciais reais só em branch confiável e ambiente restrito, nunca PR de forks; alternadamente worker externo privado.
 Invariant: `available_at_supplier` é um sinal externo, não `owned_stock`; recuperação de falha nunca transforma indisponibilidade de acesso em quantidade zero. Múltiplos fornecedores futuros por adapter, sem multi-tenant.
+
+## Supplier Fulfilment model: On-demand, not physical-stock
+A fonte externa informa **indicação** de compra, não quantidade física. Estados canônicos: `available_signal`, `unavailable_confirmed`, `unknown_stale_or_error` + `reserved_after_sale` (estado comercial local).
+- `supplier_snapshot`: valor observado, método, confiança, instante e variante.
+- `stock_policy`: quantidade física do ERP permanece intocada; disponibilidade virtual calculada para publicação conforme capacidade técnica do Bling/canais **somente após prova**.
+- `reservation`: atomicidade local por SKU/variante e pedido (um hold ativo), idempotência e `pending_pickup` com data limite para confirmar fornecedor.
+- Novo pedido -> marcar hold -> solicitar sincronização restrita no Bling/canais -> confirmar compra/retirada do item -> liberar somente após rechecagem. Em canais com eventual consistency, multi-venda simultânea pode ocorrer; exigir testes/risk acceptance e plano de cancelamento controlado.
+- A interface não afirma `in stock` absoluto. Exibe última coleta e marca `unknown` quando ultrapassar TTL; evitar que erro de scrape dispare zero físico.
+Frequência sugerida: inventário de catálogo em 4 horas; rechecagem priorizada por anúncios ativos em até 60 minutos somente se permitida e dentro de limite de páginas/servidor; antes de reabrir oferta, nova consulta. Não garantir execução no prazo via GitHub Actions.

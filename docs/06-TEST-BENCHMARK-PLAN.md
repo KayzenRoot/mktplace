@@ -26,3 +26,12 @@ base/head SHA, alteração por arquivo, comandos+exit codes, CI links, testes au
 - Scanner anti-secret em workflows, artifacts, traces, screenshots e storageState; análise de dependências Playwright.
 - Estabelecer cadência aceitável com fornecedor, tests de carga gentil, alertas sobre erro de coleta/sem dados novos e data freshness.
 - Writeback somente na WO-BLG-010 com dry-run, idempotência, revisão de diffs e casos regressivos sobre saldo físico; não usar conta real para testes destrutivos.
+
+## Riscos funcionais de venda sob demanda (WO-BLG-010 FUTURE)
+- Produto com preço, botão Comprar e campo Quantidade **não** comprova número em estoque; fixtures representam ambiguidade.
+- SKU esgotado, variação esgotada, página 200 mas botão desabilitado, estoque desconhecido, preço distinto entre Pix/parcelado.
+- Dois pedidos simultâneos de marketplaces diferentes para mesmo SKU -> apenas uma reserva local; validar comportamento de sincronização eventual dos canais, sem alegar garantia contra oversell.
+- Pedido recebido, compra/retirada no fornecedor ainda não confirmada -> held, alerta e eventual escalonamento de indisponibilidade.
+- Expiração de freshness, desafio de login, erro HTTP -> fail-safe para oferta virtual, **sem modificar saldo físico**.
+- Anúncio de categoria restrita: per-channel preflight e bloqueio de publicação sem elegibilidade comprovada.
+- Teste econômico: preço final >= custo por modalidade aplicável + taxas canal + frete + imposto + margem mínima configurada. Sem inferência de custo quando desconhecido.
