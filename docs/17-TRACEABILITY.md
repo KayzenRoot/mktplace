@@ -16,3 +16,6 @@
 | RF-011 | WO-BLG-006 | nova WO e testes |
 | RF-012..013 | futuras | riscos HIGH_ASSURANCE reavaliados |
 Status da evidência: **TODO** em todas as linhas, não comprovar testes fictícios.
+
+| RF-014..016, RNF-008..010 | WO-BLG-009 | testes de login mock, DOM, sessão, segurança e conciliação; AINDA NÃO EXECUTADOS |
+| RF-017 | WO-BLG-010 | dry-run, idempotência, revisão de diffs e auditoria escrita; AINDA NÃO EXECUTADOS |

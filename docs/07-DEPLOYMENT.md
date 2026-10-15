@@ -18,3 +18,8 @@ Sem acesso à API Bling via navegador, sem `NEXT_PUBLIC_*` para segredos, sem ro
 Reverter deployment para build anterior apenas quando schema compatível; migrações aditivas first; conexões/tokens preservados cifrados. Se incidente, revogar/reautorizar. Detalhes em `16-MIGRATION-RECOVERY.md`.
 ## Pendências externas
 Domínio, provedor de hosting, banco, conta OIDC, cadastro de app no Bling e secretos. Ausência é bloqueio para **deploy validado**, não para testes automatizados com mocks.
+
+## Política GitHub público + Actions
+Decisão explícita do Owner: repositório `KayzenRoot/mktplace` **permanece público** para usar GitHub Actions com runners padrão gratuitos; não alterar visibilidade sem nova ordem. Ainda existem limites de armazenamento/runner classes e termos de serviço. CI deve ter permissões mínimas e simular login/fornecedor usando fixtures, sem secretos de produção.
+Para futura coleta autenticada, configurar Secrets/Environments ou cofre do hosting, acesso limitado à branch/ambiente confiável; não disponibilizar secrets para PRs de forks ou `pull_request_target` com código não confiável. NUNCA imprimir estado Playwright nem anexar snapshots privados.
+Workflows agendados de repositório público podem ser desabilitados após 60 dias de inatividade; monitorar heartbeat e manter fallback externo caso tempo/fidelidade importem. Actions não substitui necessariamente hosting de app 24x7 nem bancos.

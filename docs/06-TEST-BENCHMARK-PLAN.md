@@ -19,3 +19,10 @@ Ambiente isolado + app Bling privado com scopes mínimos; smoke de conexão e um
 Limites de tempo são objetivos de benchmark, não observações atuais.
 ## Evidence Bundle
 base/head SHA, alteração por arquivo, comandos+exit codes, CI links, testes automatizados, traces com dados sanitizados, cenário de OAuth real quando disponível, benchmark, riscos, delta do checkpoint. Owner não pode atestar teste ao vivo não realizado.
+
+## Plano FUTURO WO-BLG-009 / WO-BLG-010
+- Fixture HTML de fornecedor autorizada e sem PII; login mock + sessão expirada, 2FA interativo não automatizado, 403/429, alteração DOM, tempo limite, seletor ausente, estoque desconhecido e dados parciais.
+- Deduplicar SKU+variante, conferir matching vendor->Bling, impedir falso zero por erro, snapshot versionado e reconciliação.
+- Scanner anti-secret em workflows, artifacts, traces, screenshots e storageState; análise de dependências Playwright.
+- Estabelecer cadência aceitável com fornecedor, tests de carga gentil, alertas sobre erro de coleta/sem dados novos e data freshness.
+- Writeback somente na WO-BLG-010 com dry-run, idempotência, revisão de diffs e casos regressivos sobre saldo físico; não usar conta real para testes destrutivos.

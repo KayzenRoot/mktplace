@@ -31,3 +31,15 @@ Next.js + TypeScript, Node runtime, Auth.js OIDC com Google como default **sujei
 6. Exibir conectado após sucesso, nunca expor JSON do token. Refresh atômico, armazenamento substituído após êxito, marcar reconexão se revogado.
 ## Contratos
 Detalhes em `13-API-CONTRACTS.md`, `15-INTEGRATION-CONTRACTS.md`. Dados em `12-DATABASE-DATA-MODEL.md`.
+
+## Future bounded context: Supplier Monitor (WO-BLG-009/010)
+```text
+Approved scheduler (hour(s) interval, adjustable)
+  -> supplier-collector worker (Playwright; source allowlist; credentials in vault)
+     -> normalized supplier snapshots (quantity/availability, checked_at, source)
+     -> matcher (explicit vendor SKU -> Bling SKU; review ambiguous)
+     -> change queue (diff, status + approval)
+     -> guarded writeback adapter -> Bling (WO-BLG-010 only)
+```
+Não rodar browser headless em request interativo Next.js nem na WO-001. Jobs GitHub Actions agendados são opção de baixo custo para protótipo, não scheduler com SLA: podem atrasar ou ser desabilitados por inatividade (60 dias em repo público). Workflow com credenciais reais só em branch confiável e ambiente restrito, nunca PR de forks; alternadamente worker externo privado.
+Invariant: `available_at_supplier` é um sinal externo, não `owned_stock`; recuperação de falha nunca transforma indisponibilidade de acesso em quantidade zero. Múltiplos fornecedores futuros por adapter, sem multi-tenant.

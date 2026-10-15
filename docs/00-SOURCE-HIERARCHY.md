@@ -35,3 +35,5 @@ Executor não aprova própria evidência nem promove Checkpoint Delta; auditor o
 Após APPROVED, atualizar fontes afetadas e checkpoint de forma verificável antes do merge, respeitando proteções.
 Mudanças em decisões, Scope, Architecture, DoD ou checkpoint tornam WOs baseadas no contexto anterior STALE.
 Não criar restrições redundantes: gates mínimos proporcionais ao risco; **não** dispensar auth, segregação, integridade, segredos e segurança fiscal.
+
+- `18-SUPPLIER-MONITORING.md` contrato de coleta autorizada, separação de disponibilidade/estoque, proteção de segredos e gates de integração.

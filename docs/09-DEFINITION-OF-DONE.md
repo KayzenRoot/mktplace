@@ -15,3 +15,8 @@ Todos os documentos obrigatórios presentes, vinculados por hierarquia; requisit
 Produtos, vendas, estoque, notas e financeiro implementados, reconciliáveis e validados com dados reais autorizados, respeito ao escopo das WOs.
 ## Gates
 CORRECTION REQUIRED -> somente Correction Delta no mesmo PR; BLOCKED -> não avançar; APPROVED -> atualizar docs/mergir protegidamente.
+
+## Supplier Monitor (WO-BLG-009, etapa futura)
+Contrato/site específico revisado; coleta permitida; login/sessão por cofre; nenhuma credencial no repo/CI; fixtures de login e HTML; mapeamentos inequívocos; estados unknown/unavailable separados; evidências de execução sem PII. Operação comercial permanece apenas leitura nesta WO.
+## Sync fornecedor -> Bling (WO-BLG-010, futura)
+Exigir catálogo estável, política escrita aprovada, comparação de SKUs/variantes, preview/dry-run, confirmação de proprietario ou regra explicitamente autorizada, atualização idempotente, rollback/reconciliação, logs não sensíveis e nenhuma alteração em estoque físico devido a ausência de dados do fornecedor.

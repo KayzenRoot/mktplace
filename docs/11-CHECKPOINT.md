@@ -5,10 +5,15 @@
 **Veredito:** PENDING AUDIT (não confundir com APPROVED)
 ## Estado verificado
 - Repositório GitHub `KayzenRoot/mktplace` localizado; originalmente vazio, público.
-- Branch documental: `docs/BLG-BOOT-001-source-pack`; PR de bootstrap requerida.
+- Branch documental: `docs/BLG-BOOT-001-source-pack`; PR #1 aberta e ainda não integrada, status PENDING AUDIT.
 - API Bling v3 documentação oficial consultada (OAuth, JWT, limites e webhooks).
 - Nenhum app Bling foi cadastrado por este processo; nenhuma credencial conhecida.
 - Código, testes, CI e deploy: NÃO implementados/não executados.
+## Owner decisions recebidas após draft original
+- 2026-10-15: repo público explicitamente mantido para CI/Actions grátis (ADR-009), sem publicação de segredos.
+- 2026-10-15: solicitada integração futura de portal autenticado de fornecedor sem API para observar disponibilidade e preparar atualização controlada Bling (ADR-010 e WO-BLG-009/010 no backlog).
+- Portal URL, termos e método de login ainda NÃO conhecidos; credenciais NÃO recebidas nem solicitadas no chat.
+- Preservar a WO-BLG-001 sem mudança de escopo; update deste pack é proposta na mesma PR, não checkpoint promovido.
 ## Próximo incremento necessário
 Após revisão/merge de BLG-BOOT-001, executar `work-orders/WO-BLG-001.md` com Context Lock SHA e hashes do Source Pack na execução.
 ## Bloqueios objetivos

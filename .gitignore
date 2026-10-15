@@ -18,3 +18,9 @@ test-results/
 *.sql.gz
 *.dump
 .DS_Store
+# Authenticated supplier browser state must NEVER be versioned
+playwright/.auth/
+**/storage-state*.json
+**/auth-state*.json
+supplier-snapshots/
+supplier-data/

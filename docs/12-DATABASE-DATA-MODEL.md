@@ -14,3 +14,12 @@ Sessão gerenciada pelo adaptador OIDC/Auth.js escolhido, `owner_id`, expiraçã
 Uma conexão Bling ativa por instância; token de atualização com CAS/lock transacional, row-level privileges app; índices nos vencimentos e expirações; backup cifrado. Não armazenar payload real completo no WO-001.
 ## Futuros
 Product/Order/Stock/Invoice/Payable/Receivable cache tables só nas próprias WOs, com empresa/IDs externos, timestamps de origem e sincronia.
+
+## Modelagem FUTURA (não migrar durante WO-001)
+- `supplier`: id, hostname permitido, status, polling_interval, last_ok_at (sem senha).
+- `supplier_secret_ref`: supplier_id, key reference in vault e versão (sem valores em plaintext).
+- `supplier_product`: supplier_id, external_id, variant_id, external_sku, price_decimal, availability_status enum (available/unavailable/unknown), observed_qty_nullable, checked_at, source_fingerprint, snapshot_version.
+- `supplier_bling_mapping`: supplier_product_id, bling_product_id, matching_status, approved_by, last_reviewed_at; unique mapping e prevenção ambígua.
+- `supplier_change`: before/after safe fields, detected_at, resolved_at, review/status, reconciliation_id.
+- `bling_writeback_job`: approved_policy_id, dry_run, idempotency_key, target product, proposed change, final_status, audit reference (WO-BLG-010 somente).
+Unidade e precisão: decimal para preço; status desconhecido não equivale a quantidade zero; chave externa única por fornecedor+variante; PII mínima e retenção definida na WO.

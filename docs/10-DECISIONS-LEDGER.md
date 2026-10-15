@@ -21,3 +21,8 @@ Proposta: checks determinísticos e review técnico Git/CI, sem dependência de 
 Escolha domínio/hosting/banco, OIDC provider exato, KMS/rotação, escopos Bling concretos, retenção LGPD, região de dados.
 ## Processo
 Registrar razão, alternativa, trade-offs, data, autoria e evidence bundle ao aprovar/alterar; decisões de docs sem execução não viram fatos de produção.
+
+## ADR-009: Repositório público com GitHub Actions
+**Decisão expressa do Owner em 2026-10-15: CONFIRMED_BY_OWNER; formalização documental pendente merge desta PR.** Repositório MKTPlace permanece público para usar Actions runners padrão gratuitos. Código e CI públicos, mas UI/login e dados empresariais privados. Segredos em cofre e testes PR somente com mock. Alternativa repo privado rejeitada pelo Owner devido custo/limite de CI. Não converter visibilidade em tarefa automática.
+## ADR-010: Coleta autenticada de fornecedor sem API
+**Necessidade confirmada pelo Owner em 2026-10-15; arquitetura e política de estoque: PROPOSED.** Portal de fornecedor (categorias de produtos adultos) fornece disponibilidade de catálogo via conta do proprietário e compra com retirada. Futuro adapter Playwright estritamente autorizado e com rate limit; snapshots de fornecedor independentes de saldo físico Bling, mapeamento explícito, escrita somente em WO separada. Alternativas: API/CSV/feed oficial se fornecedor oferecer, preferido quando viável.
