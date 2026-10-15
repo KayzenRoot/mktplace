@@ -66,3 +66,7 @@ Foto recebida **não foi armazenada no GitHub**. Exibe como exemplo Massageador 
 - Frequência proposta: coleta geral a cada 4h e, se permitida, priorização de produtos ofertados a cada 60 min. Retirada no mesmo dia é capacidade do proprietário, não garantia contratual de reposição do fornecedor.
 ### Dependências de aceite
 Confirmar o que acontece quando produto esgota (sinal específico por variante), publicação de quantidade virtual sem efeitos contábeis, SLA operacional e como tratar duas vendas quase simultâneas.
+
+## Seleção expressa do proprietário: regra B (2026-10-15)
+Quando a venda entrar via Bling, o MKTPlace consulta NOVAMENTE o produto/variante exato na BeHot. Se a compra continuar permitida com evidência recente, **poderá repor uma única oferta virtual** após checagem das condições de conta, custos, política do canal e de concorrência. Não exigir confirmação manual de retirada para religar, exceto em casos de risco/erro. Em caso de produto esgotado, login expirado, resposta incerta ou sinal antigo, não republicar e alertar o Owner. A disponibilidade não equivale a reserva nem a saldo físico.
+O mecanismo B requer guardas preventivas de oversell: hold por pedido e SKU, limite por canal, processamento de pedidos recebidos eventualmente com atraso, desabilitação quando retorno API não confirmado, compensação/manual se duas vendas concorrerem. **B é requisito comercial confirmado, não permissão para ativar sem testes/gates**.

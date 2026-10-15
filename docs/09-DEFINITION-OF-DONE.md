@@ -28,3 +28,6 @@ Sem evidência explícita de suporte e testes de campo virtual separado no Bling
 Painel opera produtos/anúncios/pedidos/financeiro/fiscal via Bling real, sem acesso direto obrigatório aos marketplaces no uso cotidiano; dados reproduzem fonte com last-sync e erros; elegibilidade legal/políticas aprovada por canal; IA gera drafts verificáveis, imagens fiéis licenciadas; BeHot sinaliza disponibilidade com TTL; writebacks só quando comprovados e auditados. Produtos vetados não são publicados; execução multicanal testada com status real.
 ## Frontend-first e paralelismo
 Mock UI pode estar visualmente pronto, mas **não conta como conexão real, feature ou DoD**. Agentes paralelos entregam resultado integrado no head final e todos os checks; PR não avança com defect HIGH/CRITICAL. Nenhum checkpoint promovido por executor.
+
+## B Rule Gate (WO-BLG-010 futura)
+Provar rechecagem por SKU/variante após pedido (com idempotência/hold), política de TTL e confiança, ausência de republicação ante falha, sincronização final de anúncio/estoque virtual, tratamento de vendas simultâneas e autorização por canal. Se qualquer verificação não puder ser comprovada, manter pausado e alertar; opção B não dispensa proteção contra oversell.

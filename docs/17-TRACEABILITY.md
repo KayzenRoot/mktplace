@@ -26,3 +26,5 @@ Status da evidência: **TODO** em todas as linhas, não comprovar testes fictíc
 | RF-027..029, RF-031 RNF-015 | futuras WOs IA/Settings | truthfulness/spec validation, provider mock, costs, fidelity/license e secret vault; PENDING |
 | RF-030, RF-032 | futuras WOs canais e pedidos | policy matrix per SKU, channel reject/approve, no oversell / no unapproved fiscal; PENDING |
 | RNF-016 | todas WOs | worktree ownership, merge tests/CI em head final, evidence SHA; PENDING |
+
+| Rule B pós-venda (Owner 2026-10-15) | WO-BLG-010 FUTURE | teste E2E pedido -> reconsulta fornecedor -> avaliação -> publicar até 1 / bloquear, hold e multicanal; PENDING |

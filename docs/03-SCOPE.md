@@ -27,3 +27,6 @@ Fluxo reservado para WO-BLG-010 após dependências; NÃO avançar sobre WO-BLG-
 **IMPORTANT** em futuras WOs: dashboard completo; produto e variações no Bling; preparação de anúncios; publicação/pausa Bling API v3; vendas, financeiro, fiscal, logística e atendimento; BeHot; enriquecimento textual e imagens; painel Settings seguro; controle de elegibilidade por marketplace. A abordagem visual-first se inicia no frontend da WO-001 e nas especificações UI, sem implementar e aprovar falsamente módulos não autorizados. Ações fiscais, credenciais em navegador, publicação de produtos proibidos e checkout de fornecedor automático continuam fora do incremento inicial.
 **FUTURE**: otimização publicitária, IA autônoma que publique, multitenancy, marketplace API direto, CRM de mensagens que não estejam expostas no Bling.
 Regra: Bling intermedia operações reais; UI e drafts podem ser criados com fixtures, jamais simular que dados mock são da conta.
+
+## Variante de negócio B
+Rechecagem automática após venda e eventual reposição de exposição virtual máxima 1 é **IMPORTANT FUTURO** em WO-BLG-010, não parte da conexão WO-001. Não implica compra automatizada, publicação de produto proibido, estoque real ou garantia de suprimento.

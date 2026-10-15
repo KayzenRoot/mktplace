@@ -42,3 +42,6 @@ Registrar razão, alternativa, trade-offs, data, autoria e evidence bundle ao ap
 **Owner preference CONFIRMED; implementação PROPOSED.** Um orquestrador coordena UX, Bling, BeHot, IA, QA/Segurança e operações em worktrees isolados; apenas subtarefas independentes dentro da mesma WO podem ocorrer em paralelo. Rebase e integração testada; gates APPROVED/CORRECTION REQUIRED/BLOCKED permanecem.
 ## ADR-016: Channel eligibility by item, no categorical allowance
 **PROPOSED com base em políticas públicas 2026.** Mercado Livre tem categoria Adultos com 18+ e restrições; Amazon mantém regras 'Adult Products' para brinquedos; Shopee possui restrições fortes de conteúdo e regras de bem-estar sexual. Confirmar SKU/variante, Seller account, canal/formato e anúncios normais antes de publicar. Não renomear produto para evadir restrição.
+
+### ADR-011 amendment: regra de reposição B escolhida
+**2026-10-15 / CONFIRMED_BY_OWNER (intenção):** reconsultar BeHot após venda e reabrir uma oferta virtual se produto/variante permanecer disponível. Isso substitui preferência anterior de sempre aguardar confirmação manual de retirada antes de reabrir. Desenho de estoque e writeback permanece PROPOSED até auditoria e testes. Diferenciar escolha de regra de autorização para executar rotinas comerciais.
