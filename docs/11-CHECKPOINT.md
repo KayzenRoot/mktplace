@@ -1,0 +1,19 @@
+# Checkpoint
+**Data:** 2026-10-15
+**Pack:** 0.1.0-draft
+**Fase:** SOURCE_CHECK / DOCUMENTATION PROPOSAL
+**Veredito:** PENDING AUDIT (não confundir com APPROVED)
+## Estado verificado
+- Repositório GitHub `KayzenRoot/mktplace` localizado; originalmente vazio, público.
+- Branch documental: `docs/BLG-BOOT-001-source-pack`; PR de bootstrap requerida.
+- API Bling v3 documentação oficial consultada (OAuth, JWT, limites e webhooks).
+- Nenhum app Bling foi cadastrado por este processo; nenhuma credencial conhecida.
+- Código, testes, CI e deploy: NÃO implementados/não executados.
+## Próximo incremento necessário
+Após revisão/merge de BLG-BOOT-001, executar `work-orders/WO-BLG-001.md` com Context Lock SHA e hashes do Source Pack na execução.
+## Bloqueios objetivos
+LIVE_VALIDATION_DEPENDENCIES: provedor de login/admin, banco/hospedagem/domínio HTTPS, app privado Bling, scopes e owner authorization.
+Não bloqueiam criação de código/testes mock; bloqueiam alegação de deploy conectado/versão concluída.
+## Checkpoint Delta futuro (NÃO aplicado)
+Se BOOT APPROVED: registrar PR, SHA head e merge, classificar docs APPROVED, apontar primeiro WO como READY.
+Se WO-001 APPROVED: registrar head SHA, CI, smoke real, deployment URL e riscos residuais. Executor apenas propõe, auditor valida.
