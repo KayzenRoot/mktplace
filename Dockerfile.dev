@@ -7,7 +7,20 @@ RUN mkdir -p /app/.next && chown node:node /app /app/.next
 COPY --chown=node:node package.json package-lock.json ./
 USER node
 RUN npm ci --ignore-scripts --no-audit --no-fund
-COPY --chown=node:node . .
+COPY --chown=node:node eslint.config.mjs next.config.ts next-env.d.ts tsconfig.json ./
+COPY --chown=node:node app/page.tsx app/layout.tsx app/globals.css ./app/
+COPY --chown=node:node app/settings/page.tsx ./app/settings/
+COPY --chown=node:node app/settings/integrations/page.tsx ./app/settings/integrations/
+COPY --chown=node:node src/components/AppShell.tsx ./src/components/
+COPY --chown=node:node src/lib/bling/transport.ts ./src/lib/bling/
+COPY --chown=node:node src/lib/db/oauth-store.ts ./src/lib/db/
+COPY --chown=node:node src/lib/demo-guard.ts ./src/lib/
+COPY --chown=node:node src/lib/security/owner-identity.ts src/lib/security/token-vault.ts ./src/lib/security/
+COPY --chown=node:node db/migrations/001_oauth_identity.sql ./db/migrations/
+COPY --chown=node:node tests/bling-transport.test.mjs tests/owner-identity.test.mjs tests/postgres-oauth.test.mjs tests/token-vault.test.mjs tests/visual-contract.test.mjs ./tests/
+COPY --chown=node:node scripts/verify-source-pack.mjs ./scripts/
+COPY --chown=node:node docs/04-ARCHITECTURE.md ./docs/
+COPY --chown=node:node work-orders/WO-BLG-001.md ./work-orders/
 
 EXPOSE 3000
 CMD ["npm", "run", "dev", "--", "--hostname", "0.0.0.0"]

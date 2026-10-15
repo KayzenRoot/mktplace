@@ -13,7 +13,8 @@
 
 ## Implementação local
 
-- `Dockerfile.dev`, `compose.dev.yaml`, `.dockerignore`, `.env.docker.local.example` e scripts `dev-*`/`sync-github.ps1` criam um app Node.js 22 e PostgreSQL 17 isolados por identificador de instância.
+- `Dockerfile.dev`, `compose.dev.yaml`, `.dockerignore`, `.env.docker.local.example` e scripts `dev-*`/`sync-github.ps1` criam um app Node.js 22 e PostgreSQL 17 isolados por identificador de instância. A imagem copia uma lista explícita de manifests, código, testes, migração e documentos exigidos; não usa `COPY . .`.
+- `scripts/dev-compose-context.ps1` centraliza a validação da instância, os argumentos do Compose e a restauração das variáveis de ambiente dos comandos locais.
 - App publicado em `127.0.0.1:3000` no estado final verificado; o Postgres não publica porta no host. Durante a primeira inicialização, 3000/3001 estavam ocupadas e o app iniciou em 3002; uma execução posterior voltou a 3000 depois que a porta ficou livre.
 - `.env.docker.local` foi criado com valores aleatórios locais, permanece ignorado pelo Git e não teve seus valores incluídos em logs ou nesta evidência. O exemplo versionado é modelo, não arquivo de execução.
 - O modo de desenvolvimento usa Webpack com polling para alterações de arquivos em Docker Desktop Windows. O build de produção continua sendo validado pelo script normal do projeto.
@@ -22,7 +23,7 @@
 
 | Verificação | Resultado |
 | --- | --- |
-| PowerShell Parser dos 6 scripts `dev-*` e `sync-github.ps1` | PASS |
+| PowerShell Parser dos 6 scripts `dev-*`, `sync-github.ps1` e helper compartilhado | PASS |
 | `docker compose config --quiet` | PASS na configuração final |
 | `git diff --check` | PASS |
 | `dev-check.ps1` | PASS: lint, typecheck, 15 testes (incluindo Postgres) e build Next.js; 0 falhas e 0 testes ignorados |
@@ -36,6 +37,8 @@
 | `npm audit --omit=dev --audit-level=high` | PASS: 0 vulnerabilidades |
 | Scanner dedicado de segredos | Indisponível no host; não foi alegada cobertura por gitleaks/trufflehog. Verificação de marcadores do Source Pack passou |
 | Captura da UI | Capturada no navegador local e apresentada na conversa; mostra o painel DEMO, sem dados reais |
+
+O Docker Desktop avisou que dois volumes antigos de cache com sufixo `-current` não correspondem ao hash atual do lockfile. Eles foram preservados sem limpeza manual; o banco persistente desta instância não foi removido.
 
 ### Observação sobre watcher
 
