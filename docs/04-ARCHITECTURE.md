@@ -52,3 +52,8 @@ A fonte externa informa **indicação** de compra, não quantidade física. Esta
 - Novo pedido -> marcar hold -> solicitar sincronização restrita no Bling/canais -> confirmar compra/retirada do item -> liberar somente após rechecagem. Em canais com eventual consistency, multi-venda simultânea pode ocorrer; exigir testes/risk acceptance e plano de cancelamento controlado.
 - A interface não afirma `in stock` absoluto. Exibe última coleta e marca `unknown` quando ultrapassar TTL; evitar que erro de scrape dispare zero físico.
 Frequência sugerida: inventário de catálogo em 4 horas; rechecagem priorizada por anúncios ativos em até 60 minutos somente se permitida e dentro de limite de páginas/servidor; antes de reabrir oferta, nova consulta. Não garantir execução no prazo via GitHub Actions.
+
+## Evolução de módulos sem mudança de stack
+O monólito modular mantém adapters `BlingAdapter`, `SupplierAdapter`, `LLMProvider`, `ImageProvider`, `MarketplacePolicyProvider` e `Outbox/JobRunner`. UI consome **BFF contracts tipados** e `MockRepository` durante as telas DEMO; em produção repositório real usa API Bling com OAuth e validação de owner+company.
+`ProductDraft` não é produto Bling; `ProductBling` não é `ListingChannel`; `ListingChannel` contém idLoja, tipoIntegracao, status e timestamps confirmados na API. API `/anuncios` suporta create/update/publish/pause conforme OpenAPI; comprovar cobertura dos três canais no teste por loja. UI não faz automação de browser das interfaces Bling/marketplaces.
+Orquestrador de agentes atua apenas no **desenvolvimento** e não executa ações comerciais. Workers de IA/BeHot usam fila/cron apenas nas WOs futuras.

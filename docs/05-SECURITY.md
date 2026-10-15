@@ -33,3 +33,8 @@ Revogar instalações/tokens no Bling; rotacionar Client Secret/KEY, invalidar s
 - Não alterar estoque físico por parsing de disponibilidade: escrever somente pela camada de writeback com prévia, escopo e prova de semântica do campo Bling/canal.
 - A página privada do Owner pode conter CEP e dados pessoais. **NÃO arquivar print do usuário, HTML autenticado nem traces no repositório público**, inclusive em revisão.
 - Compras/checkout automático na BeHot fora do escopo; sem armazenar dados de pagamento do proprietário.
+
+## Secrets configurados via Settings do MKTPlace (future)
+Input inicial credencial por HTTPS para backend autenticado (admin+reauth para writes), encrypt-at-rest com chave de cofre ou KMS; UI mostra status/redacted hint e rotação, **nunca** readback de senha/token. Provider APIs, BeHot username/password e cookies não ficam em frontend, banco plaintext, Actions público, snapshots, logs, markdown, prompts ou código. CSRF, SSRF, rate limit, partition by provider, owner ACL; segredos somente carregados no worker confiável; integração OAuth preferida quando suportada.
+IA recebe somente dados de catálogo necessários, evitando CPF, endereços e dados fiscais; consentimento e licenças de imagens. Geração e publicação de itens adultos precisa respeitar a política de modelo e canal.
+Ações de publicação/pausa são HIGH_ASSURANCE pela exposição comercial; fiscal é HIGH_ASSURANCE por irreversibilidade e deve seguir confirmação e evidências. Agentes de programação não recebem segredos em worktrees.

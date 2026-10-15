@@ -15,3 +15,7 @@
 ## Política
 Somente iniciar próxima WO depois da anterior APPROVED e checkpoint sincronizado. Itens IMPORTANT não entram automaticamente na WO corrente.
 Fazer apenas incremento NECESSARY para satisfazer DoD, sem reescrever tecnologia desnecessariamente.
+
+## Planejamento macro sem abrir nova WO executável
+Agrupar WOs FUTURAS após a WO vigente nas sequências de capacidade: (1) UI shell + mock e conexão; (2) catálogo e BeHot somente leitura; (3) Product Studio com IA texto/imagem; (4) Elegibilidade por canal e anúncios Bling; (5) estoque sob demanda e pedidos; (6) fiscal/financeiro/logística; (7) relatórios, alertas, automação. IDs estáveis novos somente ao chegar cada NEXT NECESSARY INCREMENT, evitando tarefas concorrentes fora da WO aprovada.
+UI/UX, IA e canais documentados em `20..24`, classificação no Scope. Paralelizar **subtarefas dentro da mesma WO** sem pular gates. Não reivindicar progresso de implementação por documentação.

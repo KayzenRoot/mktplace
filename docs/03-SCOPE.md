@@ -22,3 +22,8 @@ Proteção de login: credenciais mantidas em cofre, não compartilhadas no chat/
 ## Requisito negócio esclarecido por foto (2026-10-15)
 Owner deseja publicar produtos da BeHot mesmo sem possuir unidades físicas e repor por compra/retirada no mesmo dia. O módulo deixa de ser apenas monitor para integrar futuramente um catálogo sob demanda, **sem ativar estoque artificial nem criação de anúncios nesta WO**. A exposição proposta inicial <=1 unidade virtual por SKU/variante (somente após validação de infraestrutura e sem misturar com depósito físico). Produtos de categoria adulta estão sujeitos à política específica de cada marketplace e não são automaticamente elegíveis.
 Fluxo reservado para WO-BLG-010 após dependências; NÃO avançar sobre WO-BLG-001 nem realizar testes de compra reais agora.
+
+## Ampliação empresarial planejada (não inclui na WO-BLG-001)
+**IMPORTANT** em futuras WOs: dashboard completo; produto e variações no Bling; preparação de anúncios; publicação/pausa Bling API v3; vendas, financeiro, fiscal, logística e atendimento; BeHot; enriquecimento textual e imagens; painel Settings seguro; controle de elegibilidade por marketplace. A abordagem visual-first se inicia no frontend da WO-001 e nas especificações UI, sem implementar e aprovar falsamente módulos não autorizados. Ações fiscais, credenciais em navegador, publicação de produtos proibidos e checkout de fornecedor automático continuam fora do incremento inicial.
+**FUTURE**: otimização publicitária, IA autônoma que publique, multitenancy, marketplace API direto, CRM de mensagens que não estejam expostas no Bling.
+Regra: Bling intermedia operações reais; UI e drafts podem ser criados com fixtures, jamais simular que dados mock são da conta.

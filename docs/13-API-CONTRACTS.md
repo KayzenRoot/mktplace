@@ -12,3 +12,8 @@ Todas as rotas `/api/` usam TLS e autenticação admin exceto callback OAuth (qu
 ## Restrições
 Nenhum endpoint interno proxy genérico `url`; path externo allowlist e payload validado; usuário não escolhe scopes/redirect/host por query.
 Especificação detalhada implementada e versionada junto com testes de contrato na WO-001; ajustar erros de callback para UX sem expor detalhes.
+
+## Bling anúncio: API contratual externa (future)
+Fonte: https://developer.bling.com.br/build/assets/openapi-Dw6cY8yQ.json (consultada 2026-10-15).
+Bling `GET /anuncios`, `POST /anuncios`, `GET/PUT/DELETE /anuncios/{idAnuncio}`, `POST /anuncios/{idAnuncio}/publicar`, `POST /anuncios/{idAnuncio}/pausar`; parâmetros `tipoIntegracao` e `idLoja` nas operações de listing/publicação/pausa. Confirmar no preflight campos obrigatórios e efetivo comportamento ML/Shopee/Amazon. `204` significa operação aceita do endpoint, **não** confirmação final de anúncio publicado no canal sem consulta posterior.
+**BFF interno proposto:** `/api/catalog/drafts`, `/api/catalog/products`, `/api/listings`, `/api/listings/{id}/review`, `/api/listings/{id}/publish`, `/api/listings/{id}/pause`, `/api/ai/text/draft`, `/api/ai/images/enhance`, `/api/settings/providers`; versões e schemas somente quando WOs correspondentes forem abertas. Writes owner-only + CSRF, validação do marketplace, aprovação, idempotência e logs sem PII.

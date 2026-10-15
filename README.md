@@ -28,3 +28,7 @@ Documentos oficiais consultados: https://developer.bling.com.br/aplicativos ; ht
 
 ## Próximo passo
 Auditar e aprovar a PR documental. Só então executar WO-BLG-001 em branch própria, testar, fazer PR e auditar.
+
+## Nova visão funcional confirmada pelo Owner (2026-10-15)
+MKTPlace é o cockpit web de operação via Bling para Mercado Livre, Shopee e Amazon, incluindo fornecedor BeHot, enriquecimento de cadastro por IA (texto/imagem) e visualização de pedidos, financeiro, fiscal e logística. Veja [Mapa de Módulos](docs/20-MODULE-MAP.md), [Estratégia visual-first](docs/21-FRONTEND-FIRST-DELIVERY.md), [IA providers](docs/22-AI-PROVIDER-CONTRACTS.md), [Políticas marketplaces](docs/23-MARKETPLACE-ELIGIBILITY.md) e [Agentes](docs/24-MULTI-AGENT-PLAN.md).
+A prioridade visual **não elimina** auth ou segredos; mocks são identificados como DEMO. Bling API v3 documenta criação/publicação/pausa de anúncios, mas integração por canal, políticas e permissões devem ser validadas antes de execução real. Fonte: https://developer.bling.com.br/referencia

@@ -18,3 +18,6 @@ Hospedagem, domínio e banco ainda NÃO foram provisionados.
 
 ## Integração fornecedor futuro
 Um fornecedor externo oferece catálogo e disponibilidade em portal autenticado sem API declarada. O MKTPlace deverá coletar somente com login autorizado e permitido, reconciliar SKU/catálogo e manter disponibilidade de fornecedor separada do estoque físico do operador no Bling. Portal, termos e formato dos dados ainda não informados, logo viabilidade real NÃO verificada. Repositório permanecerá público por decisão expressa do proprietário.
+
+## Visão expandida do Owner (2026-10-15)
+O usuário quer trabalhar **somente pelo MKTPlace** após onboarding inevitável dos marketplaces no Bling: acompanhar todos os pedidos, enviar catálogos/anúncios, financeiro, documentos e ações autorizadas; usar IA para enriquecer imagens e textos de produtos verdadeiros e administrar modelos/credenciais pelo painel; Bling segue ERP oficial/mediador, e a BeHot fornece sinal de disponibilidade para venda sob demanda. A primeira prioridade percebida é o **frontend visual** e desenvolvimento multiagente, sem sacrificar evidência ou conexão segura. Os três marketplaces são alvos, não afirmação de elegibilidade universal.

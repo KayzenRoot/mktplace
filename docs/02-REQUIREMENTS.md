@@ -41,3 +41,20 @@ Requisitos de negócio: solicitação do proprietário (2026-10-15). Contratos e
 - **RF-022 [IMPORTANT WO-BLG-010]** Somente publicar automaticamente produtos elegíveis por canal, validando restrições de categorias, regras de anúncio, condições de preço/margem, custos de Pix/cartão/frete/imposto e disponibilidade do fornecedor.
 - **RNF-011** Nenhuma coleta pode garantir reserva no fornecedor; risco residual de ruptura e SLA de retirada devem ser explícitos. Disponibilidade não garante a compra real.
 - **RNF-012** Disponibilidade virtual proposta inicial de no máximo 1 por SKU/variante, **sujeita a validação técnica e comercial**; jamais preencher saldo físico do Bling com valores fictícios. A primeira venda gera hold até reconciliação.
+
+## Expansão funcional: operação completa Bling + marketplace + IA (intenção Owner 2026-10-15)
+- **RF-023 [IMPORTANT após WO-001]** Painel web único com todas as áreas do Bling e marketplaces; marcações DEMO/real, staleness, status da operação.
+- **RF-024 [IMPORTANT]** Criar e editar cadastro Bling pelo sistema: SKU, GTIN/EAN quando aplicável, variações, atributos verificáveis, fotos, título, preço, dimensões, situação, categoria e NCM quando aplicável; erros e diff rastreáveis.
+- **RF-025 [IMPORTANT]** Gerir anúncios por loja com ações rascunho, publicar, pausar e atualizar via **Bling API v3 /anuncios** e idLoja/tipoIntegracao, condicionado a escopos e suporte de cada integração; sem prometer sucesso antes do retorno canal.
+- **RF-026 [IMPORTANT]** Importar e exibir vendas, pagamentos e taxas conforme dado Bling disponível, notas fiscais, contas, estoque e logística; relatórios cross-channel, conciliação e filas de falhas.
+- **RF-027 [IMPORTANT]** Geração assistida de título, descrição e atributos por provedor de LLM configurável (DeepSeek/OpenAI) preservando origem de cada fato e sinalizando informações ausentes em vez de inventá-las.
+- **RF-028 [IMPORTANT]** Ferramentas de imagem com recorte, fundo, correção de iluminação, realce; IA opcional (local/open source ou API) com comparação original vs resultado e verificação de fidelidade do produto.
+- **RF-029 [IMPORTANT]** Settings com credenciais Bling, fornecedor BeHot, LLM, processador de imagem, políticas de coleta, marketplaces, preços, margens, sincronização, alertas, usuários, custo e logs; todos secrets em cofre server-only, nunca readback plaintext.
+- **RF-030 [IMPORTANT]** Validação por SKU/canal de políticas de produtos adultos, categoria correta, restrições de imagem/texto, embalagem, documentos e condições de publicação; bloqueio até elegibilidade comprovada.
+- **RF-031 [IMPORTANT]** Workflow de imagem/texto da IA gera somente draft -> revisão -> publicação; auditoria de quem aprovou, modelo/provider, origem e mudanças.
+- **RF-032 [IMPORTANT]** Estados de pedidos e separação/retirada fornecedor, nota e despacho; não automatizar checkout de fornecedor nem emissão/cancelamento fiscal por default.
+- **RF-033 [IMPORTANT]** Adapters de marketplaces exclusivamente via Bling como principal, sem dependência de login direto ML/Shopee/Amazon no app; processos iniciais OAuth dos canais podem exigir autorização externa pelo Owner.
+- **RNF-013** UX visual-first com fixtures sintéticas, contract tests e states; UI não pode transmitir informações de DEMO como reais.
+- **RNF-014** Ações de anúncio/escrita idempotentes, com conferência de escopo/loja, logs de auditoria, rate limiting, confirmação e capacidade de reprocessamento seguro.
+- **RNF-015** Geração de imagem e texto só com licença de uso adequada, conteúdo verídico e regras de canais; jamais alterar características físicas/etiquetas nem inventar certificações/composição/funções.
+- **RNF-016** Processos paralelos precisam de Context Lock, worktrees separados, arquivos ownership claro e CI no head integrado; veredito do revisor independente.

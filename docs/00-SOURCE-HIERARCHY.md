@@ -39,3 +39,9 @@ Não criar restrições redundantes: gates mínimos proporcionais ao risco; **n�
 - `18-SUPPLIER-MONITORING.md` contrato de coleta autorizada, separação de disponibilidade/estoque, proteção de segredos e gates de integração.
 
 - `19-BEHOT-PUBLIC-DISCOVERY.md` constatações datadas sobre fonte pública do fornecedor e lacunas de validação.
+
+- `20-MODULE-MAP.md` inventário completo de módulos e fronteiras, intenções e critérios.
+- `21-FRONTEND-FIRST-DELIVERY.md` ordem das telas com mocks/contratos/vertical slices.
+- `22-AI-PROVIDER-CONTRACTS.md` provedores text/imagem, compliance e verificabilidade.
+- `23-MARKETPLACE-ELIGIBILITY.md` matriz de políticas e gates por SKU/canal.
+- `24-MULTI-AGENT-PLAN.md` paralelismo seguro com WOs estáveis e CI final.

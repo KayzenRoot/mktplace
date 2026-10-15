@@ -35,3 +35,11 @@ base/head SHA, alteração por arquivo, comandos+exit codes, CI links, testes au
 - Expiração de freshness, desafio de login, erro HTTP -> fail-safe para oferta virtual, **sem modificar saldo físico**.
 - Anúncio de categoria restrita: per-channel preflight e bloqueio de publicação sem elegibilidade comprovada.
 - Teste econômico: preço final >= custo por modalidade aplicável + taxas canal + frete + imposto + margem mínima configurada. Sem inferência de custo quando desconhecido.
+
+## Planos FUTUROS para catálogo + canais + IA
+- Testes de contrato gerados da OpenAPI Bling para `GET/POST /anuncios`, `PUT /anuncios/{id}`, `POST /anuncios/{id}/publicar` e `/pausar`, com escopo, idLoja, tipoIntegracao, quotas e erros; live por loja autorizada, sem item proibido.
+- Sandbox/mock de catálogo com variantes + GTIN + specs ausentes; LLM nunca inventa ficha, declara campo UNKNOWN; 2 providers com timeout/fallback/custo; proteger prompt injection presente no HTML da BeHot.
+- Image diff original/processada: fidelidade de geometria/cor e marca/etiqueta, licença e conformidade do anúncio; review humano antes de publicar.
+- Oferta sob demanda: concorrência multicanal, pedido recebido, atualização atrasada, fornecedor unknown, publicação/pausa idempotentes, impossibilidade de promessa de estoque.
+- UI E2E visual-first: fixture marcada DEMO, loading, erro, vazios, responsive, acessibilidade e rotas protegidas; páginas DEMO não consomem credencial real.
+- Marketplace policy tests: SKU elegível e não elegível, restrições de imagens, EAN/GTIN faltante, categoria errada, denial e override proibido.

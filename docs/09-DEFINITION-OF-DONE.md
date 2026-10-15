@@ -23,3 +23,8 @@ Exigir catálogo estável, política escrita aprovada, comparação de SKUs/vari
 
 ## Validação específica da venda sem estoque físico
 Sem evidência explícita de suporte e testes de campo virtual separado no Bling + marketplace, bloquear qualquer sincronização de quantidade; exigir estratégia alternativa autorizada. Para cada SKU/variante: sinal atual com timestamp e confidence, política de exposição <=1 proposta, parada ante stale/error, reserva pós-venda, revisão manual de indisponibilidade, economicidade validada e compliance por canal. Não afirmar prevenção total de oversell sem confirmação de sincronização multicanal.
+
+## Requisitos de negócio de V1 futura
+Painel opera produtos/anúncios/pedidos/financeiro/fiscal via Bling real, sem acesso direto obrigatório aos marketplaces no uso cotidiano; dados reproduzem fonte com last-sync e erros; elegibilidade legal/políticas aprovada por canal; IA gera drafts verificáveis, imagens fiéis licenciadas; BeHot sinaliza disponibilidade com TTL; writebacks só quando comprovados e auditados. Produtos vetados não são publicados; execução multicanal testada com status real.
+## Frontend-first e paralelismo
+Mock UI pode estar visualmente pronto, mas **não conta como conexão real, feature ou DoD**. Agentes paralelos entregam resultado integrado no head final e todos os checks; PR não avança com defect HIGH/CRITICAL. Nenhum checkpoint promovido por executor.

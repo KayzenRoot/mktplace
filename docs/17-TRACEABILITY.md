@@ -21,3 +21,8 @@ Status da evidência: **TODO** em todas as linhas, não comprovar testes fictíc
 | RF-017 | WO-BLG-010 | dry-run, idempotência, revisão de diffs e auditoria escrita; AINDA NÃO EXECUTADOS |
 
 | RF-018..022 RNF-011..012 | WO-BLG-009/010 (future) | fixture botão Comprar vs estoque desconhecido, reserva concorrente multicanal, freeze stale, virtual vs físico, margens e compliance; PENDING |
+
+| RF-023..026, RF-033 RNF-013..014 | futuras WOs (após 001) | typed fixture contracts, OpenAPI anúncios, UI E2E, canal live com auth e quotas; PENDING |
+| RF-027..029, RF-031 RNF-015 | futuras WOs IA/Settings | truthfulness/spec validation, provider mock, costs, fidelity/license e secret vault; PENDING |
+| RF-030, RF-032 | futuras WOs canais e pedidos | policy matrix per SKU, channel reject/approve, no oversell / no unapproved fiscal; PENDING |
+| RNF-016 | todas WOs | worktree ownership, merge tests/CI em head final, evidence SHA; PENDING |
