@@ -12,7 +12,7 @@
 ## Owner decisions recebidas após draft original
 - 2026-10-15: repo público explicitamente mantido para CI/Actions grátis (ADR-009), sem publicação de segredos.
 - 2026-10-15: solicitada integração futura de portal autenticado de fornecedor sem API para observar disponibilidade e preparar atualização controlada Bling (ADR-010 e WO-BLG-009/010 no backlog).
-- Portal URL, termos e método de login ainda NÃO conhecidos; credenciais NÃO recebidas nem solicitadas no chat.
+- URL BeHot `https://www.behot.com.br/` informada. Site público, catálogo `/produtos/`, login `/account/login/` e alguns indicadores de disponibilidade confirmados por fontes públicas (documento `19-BEHOT-PUBLIC-DISCOVERY.md`). Login real, validação de SKU, termos de scraping, exportação B2B e dados privados AINDA NÃO VERIFICADOS; credenciais NÃO recebidas nem solicitadas no chat.
 - Preservar a WO-BLG-001 sem mudança de escopo; update deste pack é proposta na mesma PR, não checkpoint promovido.
 ## Próximo incremento necessário
 Após revisão/merge de BLG-BOOT-001, executar `work-orders/WO-BLG-001.md` com Context Lock SHA e hashes do Source Pack na execução.

@@ -37,3 +37,5 @@ Mudanças em decisões, Scope, Architecture, DoD ou checkpoint tornam WOs basead
 Não criar restrições redundantes: gates mínimos proporcionais ao risco; **não** dispensar auth, segregação, integridade, segredos e segurança fiscal.
 
 - `18-SUPPLIER-MONITORING.md` contrato de coleta autorizada, separação de disponibilidade/estoque, proteção de segredos e gates de integração.
+
+- `19-BEHOT-PUBLIC-DISCOVERY.md` constatações datadas sobre fonte pública do fornecedor e lacunas de validação.

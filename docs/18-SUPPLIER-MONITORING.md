@@ -5,11 +5,13 @@
 ## Contexto da operação
 Proprietário compra catálogo de um fornecedor pela internet e retira pessoalmente. O portal possui usuário e senha, porém não foi identificada API. Queremos observar disponibilidade e eventualmente refletir situação comercial no Bling, **não** assumir que produtos do fornecedor estão fisicamente em nosso depósito.
 
-**Dependências não recebidas:** URL/domínio público do fornecedor, termos e autorização de automação, página catálogo/login, presença de 2FA/CAPTCHA e relação de SKUs/variantes. Não pedir nem armazenar login/senha no chat.
+**Fornecedor identificado:** Distribuidora BeHot, `https://www.behot.com.br/`. Login público identificado em `/account/login/` com campos e-mail/senha. Catálogo em `/produtos/`, com paginação e sinalização de disponibilidade. Nenhuma sessão autenticada executada.
+
+**Dependências ainda ausentes:** termos/autorização de coleta, formato real de SKU/variante, eventual preço diferenciado pós-login, MFA/CAPTCHA e existência de exportação/integração autorizada. Não pedir nem armazenar login/senha no chat. Consulte `19-BEHOT-PUBLIC-DISCOVERY.md` para observações e fontes.
 
 ## Modo de operação planejado
-1. Proprietário configura fornecedor no painel (domínio HTTPS permitido, identidade da conta no cofre, frequência e consentimento de acesso).
-2. Na WO-BLG-009, worker isolado abre navegador Playwright, faz login legítimo ou reutiliza sessão cifrada de armazenamento privado, respeitando desafios interativos e proibição de contorná-los.
+1. **Preferir leitura do catálogo público autorizado antes do login.** Proprietário configura fornecedor no painel (domínio HTTPS permitido, identidade da conta no cofre se necessária, frequência e consentimento de acesso). Só usar sessão autenticada se permitir dados realmente necessários e houver condições para uso automatizado.
+2. Na WO-BLG-009, adapter extrai páginas públicas permitidas com HTML leve quando possível; usar Playwright isolado só se renderização JS exigir. Para páginas privadas e após autorização, login legítimo ou sessão cifrada; respeitar desafios interativos e proibição de contorná-los.
 3. Consulta lista permitida de produtos/variantes (preferência para feed/CSV/export oficial se existir), registra código externo, preço, status disponível/indisponível/desconhecido, eventual quantidade **somente quando explicitamente publicada**, URL permitida, time observed.
 4. Normaliza snapshots e compara com histórico; mapeia SKU de fornecedor para SKU Bling, com aprovação manual de exceções.
 5. Painel fornece `Fornecedor disponível`, `Última consulta`, `Confiança`, `Divergências`, `Alterações propostas`; nunca apresentar disponibilidade como saldo em mãos.
@@ -32,8 +34,8 @@ Não presumir que acesso a portal confere permissão para coletar dados em escal
 O sistema deve suportar fornecedor com múltiplas variantes e SKU distintos; não vincular produtos pelo nome sozinho.
 
 ## Preflight para futura WO-BLG-009
-- Identificar URL pública e termos/licença/robots/rate policy; pedir permissão explícita do fornecedor quando necessário.
-- Auditar login (MFA/captcha/CSRF) e verificar se existe exportação, catálogo, feed ou API não anunciada.
+- URL identificada: `https://www.behot.com.br/`. Ainda verificar termos/licença/robots/rate policy; não interpretar falha de leitura de `robots.txt` como permissão irrestrita; pedir autorização explícita se necessário.
+- Login público identificado em `https://www.behot.com.br/account/login/`. Auditar com autorização e sessão local (MFA/captcha/CSRF) quando chegar sua WO. Verificar com fornecedor exportação de catálogo/CSV e possibilidade de feed/API B2B sob permissão; API do provedor da loja NÃO é automaticamente acessível ao comprador.
 - Obter amostras **sanitizadas**, produzidas por acesso autorizado do Owner, e determinar mapeamento SKU/variante.
 - Definir limites (domínio, páginas, max requests, frequência) antes de ativar coleta; separar dev e produção.
 - Escolher secret manager/ambiente que evite expor credenciais em repositório público.
@@ -47,3 +49,6 @@ O sistema deve suportar fornecedor com múltiplas variantes e SKU distintos; nã
 - GitHub schedule inactivity caveat: https://docs.github.com/en/actions/how-tos/manage-workflow-runs/disable-and-enable-workflows
 - Playwright auth state security: https://playwright.dev/docs/auth
 - Bling API v3: https://developer.bling.com.br/bling-api
+
+## Fonte específica BeHot
+Análise de conteúdo público em 2026-10-15 documentada em [`19-BEHOT-PUBLIC-DISCOVERY.md`](./19-BEHOT-PUBLIC-DISCOVERY.md). Sinais como 'última peça' ou 'esgotado' refletem momento da página e não SLA, reserva confirmada, quantidade confiável nem atualização em tempo real.
