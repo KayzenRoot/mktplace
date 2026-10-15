@@ -1,7 +1,7 @@
 # MKTPlace | Bling Hub
 Aplicativo web de acesso privado com repositório público, single-company, para acompanhar a operação comercial e fiscal a partir do Bling API v3.
 
-**Situação (2026-10-15):** documentação de bootstrap auditada em PR, pendente de integração ao main; implementação NÃO iniciada, integração real NÃO validada, deploy NÃO realizado. Não confundir especificação com entrega.
+**Situação (2026-10-15):** Source Pack da PR #1 INTEGRADO ao main; primeira UI M00/M17 em desenvolvimento na PR #5 (draft) com checks iniciais verdes; autenticação e Bling API reais NÃO implementados, deploy NÃO realizado. Não confundir especificação com entrega.
 
 ## Fonte da verdade
 Ordem: Checkpoint > Decisions Ledger/ADRs > Scope > Definition of Done > Architecture > Requirements > demais documentos.

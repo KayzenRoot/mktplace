@@ -1,5 +1,5 @@
 # Decisions Ledger / ADRs
-**Estado 2026-10-15: planejamento arquitetural aceito para iniciar WO-BLG-001, sujeito à integração da PR #1.** Decisões expressas do Owner (repositório público, opção B, UI-first, operação Bling e multiagentes) permanecem confirmadas. Propostas de arquitetura/integração dependem de implementação, testes e validações específicas de cada WO. Não são evidência de produto em produção.
+**Estado 2026-10-15: planejamento arquitetural aceito para iniciar WO-BLG-001, com Source Pack integrado pela PR #1 (squash SHA `5d7702207d44f273eadf534e14dff14fefcc9d42`).** Decisões expressas do Owner (repositório público, opção B, UI-first, operação Bling e multiagentes) permanecem confirmadas. Propostas de arquitetura/integração dependem de implementação, testes e validações específicas de cada WO. Não são evidência de produto em produção.
 
 ## ADR-001: Bling é source of truth
 Proposta: o app consulta/cacheia mas não duplica ERP; writeback apenas por rotas auditadas. Motivo: evitar divergência comercial/fiscal.

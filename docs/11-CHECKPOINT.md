@@ -1,39 +1,28 @@
-# Checkpoint
+# Checkpoint canônico | MKTPlace
 **Data:** 2026-10-15
 **Pack:** 0.1.0-draft
-**Fase:** SOURCE CHECK / BOOTSTRAP DOCS REVIEWED
-**Veredito documental:** APPROVED para bootstrap no HEAD auditado `573d103a78aed388a6bd6485616461cf99e075d6`, condicionado a Source Pack CI verde no HEAD final da PR #1. **Veredito de implementação:** NOT STARTED; sem auth, integração real ou deploy.
-## Estado verificado
-- Repositório GitHub `KayzenRoot/mktplace` localizado; originalmente vazio, público.
-- Branch documental: `docs/BLG-BOOT-001-source-pack`; PR #1 aberta. Revisão objetiva publicada na conversa da PR; Source Pack check SUCCESS no primeiro HEAD auditado, ainda necessário rever CI do HEAD final.
-- API Bling v3 documentação oficial consultada (OAuth, JWT, limites e webhooks).
-- Nenhum app Bling foi cadastrado por este processo; nenhuma credencial conhecida.
-- Código, testes, CI e deploy: NÃO implementados/não executados.
-## Owner decisions recebidas após draft original
-- 2026-10-15: repo público explicitamente mantido para CI/Actions grátis (ADR-009), sem publicação de segredos.
-- 2026-10-15: solicitada integração futura de portal autenticado de fornecedor sem API para observar disponibilidade e preparar atualização controlada Bling (ADR-010 e WO-BLG-009/010 no backlog).
-- URL BeHot `https://www.behot.com.br/` informada. Site público, catálogo `/produtos/`, login `/account/login/` e alguns indicadores de disponibilidade confirmados por fontes públicas (documento `19-BEHOT-PUBLIC-DISCOVERY.md`). Login real, validação de SKU, termos de scraping, exportação B2B e dados privados AINDA NÃO VERIFICADOS; credenciais NÃO recebidas nem solicitadas no chat.
-- Proprietário enviou foto da página BeHot autenticada para exemplificar venda sob demanda. Produto: R$178,63 ou R$151,84 Pix; botão COMPRAR/campo de quantidade, mas NENHUMA contagem real de estoque. Foto não incluída no repositório (dados pessoais incidentais).
-- Objetivo de negócio esclarecido: ofertar itens da BeHot sem estoque físico e buscar no mesmo dia após venda. ADR-011 proposta e critérios adicionais em WO-BLG-009/010 futuras.
-- Preservar a WO-BLG-001 sem mudança de escopo; update deste pack é proposta na mesma PR, não checkpoint promovido.
-## Próximo incremento necessário
-Após validação final/merge de BLG-BOOT-001, executar `work-orders/WO-BLG-001.md` com Context Lock SHA e hashes do Source Pack na execução.
-## Bloqueios objetivos
-LIVE_VALIDATION_DEPENDENCIES: provedor de login/admin, banco/hospedagem/domínio HTTPS, app privado Bling, scopes e owner authorization.
-Não bloqueiam criação de código/testes mock; bloqueiam alegação de deploy conectado/versão concluída.
-## Checkpoint Delta futuro (NÃO aplicado)
-Se BOOT APPROVED: registrar PR, SHA head e merge, classificar docs APPROVED, apontar primeiro WO como READY.
-Se WO-001 APPROVED: registrar head SHA, CI, smoke real, deployment URL e riscos residuais. Executor apenas propõe, auditor valida.
+**Fase:** WO-BLG-001 IN PROGRESS
+**Veredito BLG-BOOT-001:** APPROVED, documentação integrada ao main; não é aceite da aplicação.
+**Veredito WO-BLG-001:** IN PROGRESS / NÃO CONCLUÍDO
 
-## Delta de requisitos recebidos em 2026-10-15 (não promovido)
-- Owner definiu MKTPlace cockpit de produtos/anúncios/vendas/notas/financeiro para Mercado Livre, Shopee, Amazon via Bling; IA de texto (DeepSeek/OpenAI), IA de imagem grátis/local se possível, config central de credenciais e fornecedores, UI primeiro, múltiplos agentes paralelos.
-- Owner escolheu opção **B**: após venda, reconsultar BeHot; se persistir sinal de disponibilidade, considerar republicar no máximo 1 oferta virtual. **Não é autorização para execução imediata**: exigir verificação de SKU/variante, TTL, reserva, propagação entre canais, política e writeback demonstrados. Falha = manter pausado, não escrever estoque físico.
-- Contrato OpenAPI Bling atual (2026-10-15) comprova endpoints de anúncios criar, obter, alterar, publicar e pausar; compatibilidade por marketplace e scopes ainda não testada.
-- Source Pack proposto ampliado em PR #1; docs `20-24`; WO-BLG-001 não executada nem liberada; não promover checkpoint nem iniciar próximas WOs.
+## Verdade verificada no GitHub
+- Repositório `KayzenRoot/mktplace` é **público por decisão do Owner**. Continuar com CI Actions runners padrão sem expor segredos.
+- PR #1 de bootstrap Source Pack auditada, checks `source-pack-verify` e Socket concluídos com sucesso; **squash merge main SHA `5d7702207d44f273eadf534e14dff14fefcc9d42`**. Auditoria no thread da PR; ausência de revisão humana independente não é compensada por CodeRabbit.
+- WO-BLG-001 aberta em PR #5 **draft**, branch `feat/WO-BLG-001-secure-oauth`, base inicial `5d7702207d44f273eadf534e14dff14fefcc9d42`.
+- HEAD verificado da PR #5 em 2026-10-15: `9b64bb44992f65900178ff6850c8e243008738c7`. Implementação visual M00 Dashboard e M17 integrações usando **dados DEMO**, Next.js+TS, CSS responsivo e preview fechada em produção por default.
+- CI UI Foundation `38753775538`: lint, typecheck, unit smoke, build Next, Chromium SSR + capturas desktop/mobile e `npm audit --omit=dev --audit-level=high` **SUCCESS**; artefato `wo-blg-001-visual-and-lock` contendo imagens e lockfile GERADO NO RUNNER. CI Source Pack também SUCCESS. Estas evidências não comprovam auth, integrações nem deploy.
+- `package-lock.json` ainda **não versionado no PR #5**. Dependências diretas fixadas, mas transitive lock não reproduzível até commit do lockfile e `npm ci` substituir `npm install` no workflow.
+- `main` sem branch protection/ruleset, risco de governança ainda pendente.
 
-## Evidência documental de auditoria (não é deploy)
-- PR https://github.com/KayzenRoot/mktplace/pull/1
-- Head inicialmente auditado: `573d103a78aed388a6bd6485616461cf99e075d6`, base `fac76a5fd1101d7cbc20f6d59beb2e33bf2ed777`
-- Workflow Source Pack: https://github.com/KayzenRoot/mktplace/actions/runs/38750521862 (success). Reexecutar para HEAD final.
-- Main inicialmente sem branch protection. Ausência documentada; não atribuir revisão técnica independente a checks externos.
-- Primeiro incremento visual fica restrito a M00 e tela Bling de M17 que constam da WO-BLG-001. Demais módulos seguem planejamento sem execução.
+## Requisitos do Owner já registrados (planejamento)
+- MKTPlace web, Bling intermediando Mercado Livre, Shopee, Amazon (compatibilidade SKU/canal pendente), BeHot fornecedor sob demanda sem inventário físico, regra B para rechecagem após pedido.
+- IA texto DeepSeek/OpenAI; imagens gratuitas/locais quando possível; Settings seguros; prioridade visual-first e multiagentes dentro da mesma WO.
+
+## Bloqueios/pendências reais da WO-BLG-001
+- Implementar OIDC Owner-only, MFA no provedor, sessões seguras, callback OAuth Bling v3 (JWT), token vault criptografado, refresh serializado, DB e testes de erros/race/CSRF.
+- Confirmar domínio/ambiente HTTPS, banco, IdP, app privado Bling/scopes e autorizar login real; nenhum segredo deve circular em PR/issue/chat.
+- Validar testes ao vivo e segurança HIGH_ASSURANCE, revisão independente, Evidence Bundle base/head e deploy real para declarar APPROVED.
+- Não liberar ações de marketplace, scraper autenticado ou escrita fiscal. Não iniciar WO-BLG-002 enquanto WO-001 não for aprovada.
+
+## Próxima ação necessária
+Manter PR #5 em draft e avançar **apenas WO-BLG-001**, priorizando identidade/OAuth/DB depois do feedback visual; sincronizar Context Lock para o novo HEAD main desta atualização de checkpoint. Checkpoint Delta de código é proposto pelo executor e só promovido após auditoria.
