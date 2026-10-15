@@ -1,5 +1,5 @@
 # Decisions Ledger / ADRs
-**Status global inicial: PROPOSED; nenhuma decisão está aprovada até a revisão/merge da PR documental.**
+**Estado 2026-10-15: planejamento arquitetural aceito para iniciar WO-BLG-001, sujeito à integração da PR #1.** Decisões expressas do Owner (repositório público, opção B, UI-first, operação Bling e multiagentes) permanecem confirmadas. Propostas de arquitetura/integração dependem de implementação, testes e validações específicas de cada WO. Não são evidência de produto em produção.
 
 ## ADR-001: Bling é source of truth
 Proposta: o app consulta/cacheia mas não duplica ERP; writeback apenas por rotas auditadas. Motivo: evitar divergência comercial/fiscal.

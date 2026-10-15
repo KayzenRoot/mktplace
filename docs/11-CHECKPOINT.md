@@ -1,11 +1,11 @@
 # Checkpoint
 **Data:** 2026-10-15
 **Pack:** 0.1.0-draft
-**Fase:** SOURCE_CHECK / DOCUMENTATION PROPOSAL
-**Veredito:** PENDING AUDIT (não confundir com APPROVED)
+**Fase:** SOURCE CHECK / BOOTSTRAP DOCS REVIEWED
+**Veredito documental:** APPROVED para bootstrap no HEAD auditado `573d103a78aed388a6bd6485616461cf99e075d6`, condicionado a Source Pack CI verde no HEAD final da PR #1. **Veredito de implementação:** NOT STARTED; sem auth, integração real ou deploy.
 ## Estado verificado
 - Repositório GitHub `KayzenRoot/mktplace` localizado; originalmente vazio, público.
-- Branch documental: `docs/BLG-BOOT-001-source-pack`; PR #1 aberta e ainda não integrada, status PENDING AUDIT.
+- Branch documental: `docs/BLG-BOOT-001-source-pack`; PR #1 aberta. Revisão objetiva publicada na conversa da PR; Source Pack check SUCCESS no primeiro HEAD auditado, ainda necessário rever CI do HEAD final.
 - API Bling v3 documentação oficial consultada (OAuth, JWT, limites e webhooks).
 - Nenhum app Bling foi cadastrado por este processo; nenhuma credencial conhecida.
 - Código, testes, CI e deploy: NÃO implementados/não executados.
@@ -17,7 +17,7 @@
 - Objetivo de negócio esclarecido: ofertar itens da BeHot sem estoque físico e buscar no mesmo dia após venda. ADR-011 proposta e critérios adicionais em WO-BLG-009/010 futuras.
 - Preservar a WO-BLG-001 sem mudança de escopo; update deste pack é proposta na mesma PR, não checkpoint promovido.
 ## Próximo incremento necessário
-Após revisão/merge de BLG-BOOT-001, executar `work-orders/WO-BLG-001.md` com Context Lock SHA e hashes do Source Pack na execução.
+Após validação final/merge de BLG-BOOT-001, executar `work-orders/WO-BLG-001.md` com Context Lock SHA e hashes do Source Pack na execução.
 ## Bloqueios objetivos
 LIVE_VALIDATION_DEPENDENCIES: provedor de login/admin, banco/hospedagem/domínio HTTPS, app privado Bling, scopes e owner authorization.
 Não bloqueiam criação de código/testes mock; bloqueiam alegação de deploy conectado/versão concluída.
@@ -30,3 +30,10 @@ Se WO-001 APPROVED: registrar head SHA, CI, smoke real, deployment URL e riscos 
 - Owner escolheu opção **B**: após venda, reconsultar BeHot; se persistir sinal de disponibilidade, considerar republicar no máximo 1 oferta virtual. **Não é autorização para execução imediata**: exigir verificação de SKU/variante, TTL, reserva, propagação entre canais, política e writeback demonstrados. Falha = manter pausado, não escrever estoque físico.
 - Contrato OpenAPI Bling atual (2026-10-15) comprova endpoints de anúncios criar, obter, alterar, publicar e pausar; compatibilidade por marketplace e scopes ainda não testada.
 - Source Pack proposto ampliado em PR #1; docs `20-24`; WO-BLG-001 não executada nem liberada; não promover checkpoint nem iniciar próximas WOs.
+
+## Evidência documental de auditoria (não é deploy)
+- PR https://github.com/KayzenRoot/mktplace/pull/1
+- Head inicialmente auditado: `573d103a78aed388a6bd6485616461cf99e075d6`, base `fac76a5fd1101d7cbc20f6d59beb2e33bf2ed777`
+- Workflow Source Pack: https://github.com/KayzenRoot/mktplace/actions/runs/38750521862 (success). Reexecutar para HEAD final.
+- Main inicialmente sem branch protection. Ausência documentada; não atribuir revisão técnica independente a checks externos.
+- Primeiro incremento visual fica restrito a M00 e tela Bling de M17 que constam da WO-BLG-001. Demais módulos seguem planejamento sem execução.

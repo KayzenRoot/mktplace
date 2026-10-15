@@ -1,5 +1,5 @@
 # Source Hierarchy e governança
-**Pack:** 0.1.0-draft | **Status:** PROPOSED | **Data:** 2026-10-15
+**Pack:** 0.1.0-draft | **Status:** APPROVED FOR SOURCE PACK | **Data:** 2026-10-15
 
 ## Ordem canônica
 1. `11-CHECKPOINT.md` (estado confirmado por evidência)

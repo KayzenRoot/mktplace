@@ -1,5 +1,5 @@
 # WO-BLG-001 | Secure Bling API v3 Connection
-**Status:** READY_AFTER_BOOT_APPROVAL (não iniciar antes da PR documental aprovada)
+**Status:** READY_AFTER_BOOT_MERGE (documentação auditada; não iniciar código antes do merge da PR documental)
 **Risk:** HIGH_ASSURANCE (autenticação privilegiada, acesso a recursos empresariais)
 **Branch:** `feat/WO-BLG-001-secure-oauth`
 **PR title:** `[WO-BLG-001] Secure Bling OAuth v3 connection`
