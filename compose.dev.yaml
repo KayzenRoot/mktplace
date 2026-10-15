@@ -1,0 +1,147 @@
+name: "mktplace-wo-blg001-${MKTPLACE_DOCKER_INSTANCE_ID:?run scripts/dev-init.ps1 first}"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    init: true
+    restart: unless-stopped
+    working_dir: /app
+    command: ["npm", "run", "dev", "--", "--webpack", "--hostname", "0.0.0.0"]
+    environment:
+      NODE_ENV: development
+      NEXT_TELEMETRY_DISABLED: "1"
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      WATCHPACK_POLLING: ${WATCHPACK_POLLING:-true}
+      CHOKIDAR_USEPOLLING: ${CHOKIDAR_USEPOLLING:-false}
+    ports:
+      - "127.0.0.1:${APP_PORT:-3000}:3000"
+    volumes:
+      - type: bind
+        source: ./app
+        target: /app/app
+        read_only: true
+      - type: bind
+        source: ./src
+        target: /app/src
+        read_only: true
+      - type: bind
+        source: ./db
+        target: /app/db
+        read_only: true
+      - type: volume
+        source: app_node_modules
+        target: /app/node_modules
+      - type: volume
+        source: app_next_cache
+        target: /app/.next
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - app_internal
+      - app_egress
+    security_opt:
+      - no-new-privileges:true
+    cpus: 1.5
+    mem_limit: 1536m
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - -e
+        - "fetch('http://127.0.0.1:3000/').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 60s
+
+  postgres:
+    image: postgres:17-bookworm
+    init: true
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - type: volume
+        source: postgres_dev_data
+        target: /var/lib/postgresql/data
+    networks:
+      - app_internal
+    security_opt:
+      - no-new-privileges:true
+    cpus: 0.5
+    mem_limit: 512m
+    shm_size: 128mb
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$${POSTGRES_USER}\" -d \"$${POSTGRES_DB}\""]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+      start_period: 10s
+
+  test:
+    profiles: ["test"]
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    init: true
+    working_dir: /app
+    command: ["npm", "run", "check"]
+    environment:
+      CI: "true"
+      NEXT_TELEMETRY_DISABLED: "1"
+      TEST_DATABASE_URL: postgresql://${TEST_POSTGRES_USER}:${TEST_POSTGRES_PASSWORD}@postgres-test:5432/${TEST_POSTGRES_DB}
+    depends_on:
+      postgres-test:
+        condition: service_healthy
+    networks:
+      - test_internal
+    security_opt:
+      - no-new-privileges:true
+    cpus: 2
+    mem_limit: 2g
+
+  postgres-test:
+    profiles: ["test"]
+    image: postgres:17-bookworm
+    init: true
+    restart: "no"
+    environment:
+      POSTGRES_DB: ${TEST_POSTGRES_DB}
+      POSTGRES_USER: ${TEST_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${TEST_POSTGRES_PASSWORD}
+      PGDATA: /var/lib/postgresql/data/pgdata
+    tmpfs:
+      - /var/lib/postgresql/data:rw,noexec,nosuid,size=512m
+    networks:
+      - test_internal
+    security_opt:
+      - no-new-privileges:true
+    cpus: 0.5
+    mem_limit: 512m
+    shm_size: 128mb
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$${POSTGRES_USER}\" -d \"$${POSTGRES_DB}\""]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+      start_period: 5s
+
+networks:
+  app_internal:
+    internal: true
+  app_egress: {}
+  test_internal:
+    internal: true
+
+volumes:
+  app_node_modules:
+    name: "mktplace-wo-blg001-${MKTPLACE_DOCKER_INSTANCE_ID:?run scripts/dev-init.ps1 first}-app-node-modules-${MKTPLACE_DEV_LOCKFILE_HASH:-current}"
+  app_next_cache:
+    name: "mktplace-wo-blg001-${MKTPLACE_DOCKER_INSTANCE_ID:?run scripts/dev-init.ps1 first}-app-next-${MKTPLACE_DEV_LOCKFILE_HASH:-current}"
+  postgres_dev_data:
+    name: "mktplace-wo-blg001-${MKTPLACE_DOCKER_INSTANCE_ID:?run scripts/dev-init.ps1 first}-postgres-dev"

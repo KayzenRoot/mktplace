@@ -26,3 +26,4 @@ supplier-snapshots/
 supplier-data/
 
 artifacts/
+!.env.docker.local.example
