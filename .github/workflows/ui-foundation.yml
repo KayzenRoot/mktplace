@@ -1,0 +1,77 @@
+name: UI Foundation
+on:
+  pull_request:
+    paths:
+      - 'app/**'
+      - 'src/**'
+      - 'tests/**'
+      - 'e2e/**'
+      - 'scripts/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'tsconfig.json'
+      - 'next.config.ts'
+      - 'eslint.config.mjs'
+      - '.github/workflows/ui-foundation.yml'
+  push:
+    branches: [main]
+permissions:
+  contents: read
+concurrency:
+  group: ui-foundation-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_DB: mktplace_test
+          POSTGRES_USER: test_owner
+          POSTGRES_PASSWORD: test_only_password
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U test_owner -d mktplace_test"
+          --health-interval 3s
+          --health-timeout 3s
+          --health-retries 20
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install reproducible dependencies
+        run: npm ci --ignore-scripts --no-fund
+      - name: Lint
+        run: npm run lint
+      - name: Typecheck
+        run: npm run typecheck
+      - name: Tests (unit + real PostgreSQL)
+        run: npm test
+        env:
+          TEST_DATABASE_URL: postgresql://test_owner:test_only_password@127.0.0.1:5432/mktplace_test
+      - name: Production build
+        run: npm run build
+        env:
+          NODE_ENV: production
+      - name: Chromium SSR smoke and desktop/mobile screenshots
+        run: bash scripts/visual-smoke.sh
+      - name: Export visual evidence and dependency lock
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: wo-blg-001-visual-and-lock
+          path: |
+            artifacts/
+            package-lock.json
+          retention-days: 7
+          if-no-files-found: warn
+      - name: Full dependency audit
+        run: npm audit --audit-level=high
+      - name: Dependency audit
+        run: npm audit --omit=dev --audit-level=high

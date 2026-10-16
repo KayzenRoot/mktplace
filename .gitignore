@@ -24,3 +24,6 @@ playwright/.auth/
 **/auth-state*.json
 supplier-snapshots/
 supplier-data/
+
+artifacts/
+!.env.docker.local.example
