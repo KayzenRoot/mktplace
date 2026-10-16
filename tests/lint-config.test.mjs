@@ -178,6 +178,17 @@ test('blocks server-only imports and private environment access from client modu
   assert.ok(aliasMessages.some(({ ruleId, line }) =>
     ruleId === 'mktplace/no-server-env-in-client' && line === 4), JSON.stringify(aliasMessages));
 
+  const localProcessIds = await ruleIds(`
+    'use client';
+    export function Client({ job }: { job: { process: string } }) {
+      return <span>{job.process}</span>;
+    }
+    export function LocalProcess(process: { env: { DATABASE_URL: string } }) {
+      return <span>{process.env.DATABASE_URL}</span>;
+    }
+  `);
+  assert.ok(!localProcessIds.includes('mktplace/no-server-env-in-client'), localProcessIds.join(', '));
+
   const publicEnvIds = await ruleIds(`
     'use client';
     export function PublicSettings() {

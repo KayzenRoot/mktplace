@@ -65,6 +65,15 @@ function isGlobalProcessExpression(node, context, aliases = new Set()) {
     && isGlobalIdentifier(node.object, 'globalThis', context);
 }
 
+function processRootIndex(node, context) {
+  const chain = memberPath(node);
+  const root = memberRoot(node);
+  if (!chain || root?.type !== 'Identifier') return -1;
+  if (chain[0] === 'globalThis' && chain[1] === 'process'
+    && isGlobalIdentifier(root, 'globalThis', context)) return 1;
+  return isGlobalProcessExpression(root, context) ? 0 : -1;
+}
+
 function hasUseClientDirective(sourceCode) {
   for (const statement of sourceCode.ast.body) {
     if (statement.type !== 'ExpressionStatement' || typeof statement.directive !== 'string') return false;
@@ -317,23 +326,23 @@ const plugin = {
         return {
           MemberExpression(node) {
             const chain = memberPath(node);
-            const processIndex = chain?.lastIndexOf('process') ?? -1;
-            const processAlias = processIndex === -1 && isGlobalProcessExpression(memberRoot(node), context);
-            if (processIndex === -1 && !processAlias) return;
+            const processIndex = processRootIndex(node, context);
+            if (processIndex === -1) return;
             if (node.parent?.type === 'MemberExpression' && node.parent.object === node
-              && (memberPath(node.parent)?.includes('process')
-                || isGlobalProcessExpression(memberRoot(node.parent), context))) return;
-            const processRootIndex = processIndex === -1 ? 0 : processIndex;
-            const key = chain[processRootIndex + 2];
-            const safe = chain[processRootIndex + 1] === 'env'
-              && chain.length === processRootIndex + 3
+              && processRootIndex(node.parent, context) !== -1) return;
+            const key = chain[processIndex + 2];
+            const safe = chain[processIndex + 1] === 'env'
+              && chain.length === processIndex + 3
               && (key === 'NODE_ENV' || (typeof key === 'string' && key.startsWith('NEXT_PUBLIC_')));
             if (!safe) context.report({ node, messageId: 'privateEnv' });
           },
           Identifier(node) {
-            if (node.name === 'process' && !(node.parent?.type === 'MemberExpression' && node.parent.object === node)) {
-              context.report({ node, messageId: 'privateEnv' });
-            }
+            if (!isGlobalIdentifier(node, 'process', context)) return;
+            const parent = node.parent;
+            if (parent?.type === 'MemberExpression'
+              && (parent.object === node || (parent.property === node && !parent.computed))) return;
+            if (parent?.key === node && !parent.computed && parent.value !== node) return;
+            context.report({ node, messageId: 'privateEnv' });
           },
         };
       },
