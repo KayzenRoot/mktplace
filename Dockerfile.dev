@@ -8,6 +8,7 @@ COPY --chown=node:node package.json package-lock.json ./
 USER node
 RUN npm ci --ignore-scripts --no-audit --no-fund
 COPY --chown=node:node eslint.config.mjs next.config.ts next-env.d.ts tsconfig.json ./
+COPY --chown=node:node scripts/eslint/mktplace-plugin.mjs ./scripts/eslint/
 COPY --chown=node:node app/page.tsx app/layout.tsx app/globals.css ./app/
 COPY --chown=node:node app/settings/page.tsx ./app/settings/
 COPY --chown=node:node app/settings/integrations/page.tsx ./app/settings/integrations/

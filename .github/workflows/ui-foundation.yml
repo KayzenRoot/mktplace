@@ -71,5 +71,7 @@ jobs:
             package-lock.json
           retention-days: 7
           if-no-files-found: warn
+      - name: Full dependency audit
+        run: npm audit --audit-level=high
       - name: Dependency audit
         run: npm audit --omit=dev --audit-level=high
