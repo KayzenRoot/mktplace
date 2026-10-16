@@ -9,9 +9,13 @@ import { ESLint } from 'eslint';
 const eslint = new ESLint({ cwd: process.cwd() });
 const fixtureFile = path.join(process.cwd(), 'app', '__lint_fixture__.tsx');
 
-async function ruleIds(source) {
+async function ruleMessages(source) {
   const [result] = await eslint.lintText(source, { filePath: fixtureFile });
-  return result.messages.map(({ ruleId }) => ruleId).filter(Boolean);
+  return result.messages;
+}
+
+async function ruleIds(source) {
+  return (await ruleMessages(source)).map(({ ruleId }) => ruleId).filter(Boolean);
 }
 
 function severity(config, ruleId) {
@@ -127,6 +131,14 @@ test('enforces core Next image, internal-link and App Router component guidance'
     export default async function ClientComponent() { return <div/>; }
   `);
   assert.ok(asyncIds.includes('mktplace/no-async-client-component'), asyncIds.join(', '));
+
+  const strictClientIds = await ruleIds(`
+    'use strict';
+    'use client';
+    import { issueOAuthState } from '../src/lib/db/oauth-store';
+    export function ClientComponent() { return <span>{String(issueOAuthState)}</span>; }
+  `);
+  assert.ok(strictClientIds.includes('mktplace/no-server-only-imports-in-client'), strictClientIds.join(', '));
 });
 
 test('blocks server-only imports and private environment access from client modules', async () => {
@@ -144,6 +156,14 @@ test('blocks server-only imports and private environment access from client modu
   `);
   assert.ok(ids.includes('mktplace/no-server-only-imports-in-client'), ids.join(', '));
   assert.ok(ids.includes('mktplace/no-server-env-in-client'), ids.join(', '));
+
+  const aliasMessages = await ruleMessages(`
+    'use client';
+    const nodeProcess = globalThis.process;
+    nodeProcess?.env?.DATABASE_URL;
+  `);
+  assert.ok(aliasMessages.some(({ ruleId, line }) =>
+    ruleId === 'mktplace/no-server-env-in-client' && line === 4), JSON.stringify(aliasMessages));
 
   const publicEnvIds = await ruleIds(`
     'use client';

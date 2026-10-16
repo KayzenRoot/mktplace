@@ -23,6 +23,48 @@ function memberPath(node) {
   return properties;
 }
 
+function memberRoot(node) {
+  let current = node;
+  while (current?.type === 'MemberExpression') current = current.object;
+  if (current?.type === 'ChainExpression') return memberRoot(current.expression);
+  return current;
+}
+
+function findVariable(identifier, context) {
+  let scope = context.sourceCode.getScope(identifier);
+  while (scope) {
+    const variable = scope.set.get(identifier.name);
+    if (variable) return variable;
+    scope = scope.upper;
+  }
+  return undefined;
+}
+
+function isGlobalIdentifier(identifier, name, context) {
+  if (identifier?.type !== 'Identifier' || identifier.name !== name) return false;
+  const variable = findVariable(identifier, context);
+  return !variable || variable.defs.length === 0;
+}
+
+function isGlobalProcessExpression(node, context, aliases = new Set()) {
+  if (node?.type === 'ChainExpression') return isGlobalProcessExpression(node.expression, context, aliases);
+  if (node?.type === 'Identifier') {
+    if (isGlobalIdentifier(node, 'process', context)) return true;
+    const variable = findVariable(node, context);
+    if (!variable || variable.defs.length !== 1 || aliases.has(variable)) return false;
+    const definition = variable.defs[0];
+    if (definition.type !== 'Variable' || definition.parent?.kind !== 'const' || !definition.node.init) return false;
+    const nextAliases = new Set(aliases);
+    nextAliases.add(variable);
+    return isGlobalProcessExpression(definition.node.init, context, nextAliases);
+  }
+  const chain = memberPath(node);
+  return chain?.length === 2
+    && chain[0] === 'globalThis'
+    && chain[1] === 'process'
+    && isGlobalIdentifier(node.object, 'globalThis', context);
+}
+
 function hasUseClientDirective(sourceCode) {
   for (const statement of sourceCode.ast.body) {
     if (statement.type !== 'ExpressionStatement' || typeof statement.directive !== 'string') return false;
@@ -54,6 +96,35 @@ function literalString(node) {
   if (node?.type === 'TemplateLiteral' && node.expressions.length === 0) return node.quasis[0]?.value?.cooked;
   if (node?.type === 'JSXExpressionContainer') return literalString(node.expression);
   return undefined;
+}
+
+function createImportVisitors(check) {
+  return {
+    ImportDeclaration(node) { check(node.source, node); },
+    ExportAllDeclaration(node) { check(node.source, node); },
+    ExportNamedDeclaration(node) { check(node.source, node); },
+    ImportExpression(node) { check(node.source, node); },
+    CallExpression(node) {
+      if (node.callee.type === 'Identifier' && node.callee.name === 'require') check(node.arguments[0], node);
+    },
+  };
+}
+
+function createImportRule({ description, messageId, message, matches, appliesTo = () => true }) {
+  return {
+    meta: {
+      type: 'problem',
+      docs: { description },
+      schema: [],
+      messages: { [messageId]: message },
+    },
+    create(context) {
+      if (!appliesTo(context)) return {};
+      return createImportVisitors((source, node) => {
+        if (matches(source?.value, context)) context.report({ node, messageId });
+      });
+    },
+  };
 }
 
 const plugin = {
@@ -97,50 +168,18 @@ const plugin = {
         };
       },
     },
-    'no-next-head-import': {
-      meta: {
-        type: 'problem',
-        docs: { description: 'Use the App Router metadata API instead of next/head.' },
-        schema: [],
-        messages: { useMetadata: 'Do not import next/head in the App Router; use the metadata API.' },
-      },
-      create(context) {
-        function check(source, node) {
-          if (source?.value === 'next/head') context.report({ node, messageId: 'useMetadata' });
-        }
-        return {
-          ImportDeclaration(node) { check(node.source, node); },
-          ExportAllDeclaration(node) { check(node.source, node); },
-          ExportNamedDeclaration(node) { check(node.source, node); },
-          ImportExpression(node) { check(node.source, node); },
-          CallExpression(node) {
-            if (node.callee.type === 'Identifier' && node.callee.name === 'require') check(node.arguments[0], node);
-          },
-        };
-      },
-    },
-    'no-next-document-import': {
-      meta: {
-        type: 'problem',
-        docs: { description: 'Prevent next/document imports in application modules.' },
-        schema: [],
-        messages: { noDocument: 'Do not import next/document in application modules.' },
-      },
-      create(context) {
-        function check(source, node) {
-          if (source?.value === 'next/document') context.report({ node, messageId: 'noDocument' });
-        }
-        return {
-          ImportDeclaration(node) { check(node.source, node); },
-          ExportAllDeclaration(node) { check(node.source, node); },
-          ExportNamedDeclaration(node) { check(node.source, node); },
-          ImportExpression(node) { check(node.source, node); },
-          CallExpression(node) {
-            if (node.callee.type === 'Identifier' && node.callee.name === 'require') check(node.arguments[0], node);
-          },
-        };
-      },
-    },
+    'no-next-head-import': createImportRule({
+      description: 'Use the App Router metadata API instead of next/head.',
+      messageId: 'useMetadata',
+      message: 'Do not import next/head in the App Router; use the metadata API.',
+      matches: (source) => source === 'next/head',
+    }),
+    'no-next-document-import': createImportRule({
+      description: 'Prevent next/document imports in application modules.',
+      messageId: 'noDocument',
+      message: 'Do not import next/document in application modules.',
+      matches: (source) => source === 'next/document',
+    }),
     'no-html-head': {
       meta: {
         type: 'suggestion',
@@ -204,32 +243,14 @@ const plugin = {
         };
       },
     },
-    'no-server-only-imports-in-client': {
-      meta: {
-        type: 'problem',
-        docs: { description: 'Block server-only modules from client components.' },
-        schema: [],
-        messages: { serverImport: 'Client components cannot import server-only modules or Node.js built-ins.' },
-      },
-      create(context) {
-        if (!hasUseClientDirective(context.sourceCode)) return {};
-        const filename = context.filename ?? context.getFilename();
-        function check(source, node) {
-          if (typeof source?.value === 'string' && isProtectedImport(source.value, filename)) {
-            context.report({ node, messageId: 'serverImport' });
-          }
-        }
-        return {
-          ImportDeclaration(node) { check(node.source, node); },
-          ExportAllDeclaration(node) { check(node.source, node); },
-          ExportNamedDeclaration(node) { check(node.source, node); },
-          ImportExpression(node) { check(node.source, node); },
-          CallExpression(node) {
-            if (node.callee.type === 'Identifier' && node.callee.name === 'require') check(node.arguments[0], node);
-          },
-        };
-      },
-    },
+    'no-server-only-imports-in-client': createImportRule({
+      description: 'Block server-only modules from client components.',
+      messageId: 'serverImport',
+      message: 'Client components cannot import server-only modules or Node.js built-ins.',
+      appliesTo: (context) => hasUseClientDirective(context.sourceCode),
+      matches: (source, context) => typeof source === 'string'
+        && isProtectedImport(source, context.filename ?? context.getFilename()),
+    }),
     'no-server-env-in-client': {
       meta: {
         type: 'problem',
@@ -242,12 +263,16 @@ const plugin = {
         return {
           MemberExpression(node) {
             const chain = memberPath(node);
-            if (!chain?.includes('process')) return;
-            if (node.parent?.type === 'MemberExpression' && node.parent.object === node && memberPath(node.parent)?.includes('process')) return;
-            const processIndex = chain.lastIndexOf('process');
-            const key = chain[processIndex + 2];
-            const safe = chain[processIndex + 1] === 'env'
-              && chain.length === processIndex + 3
+            const processIndex = chain?.lastIndexOf('process') ?? -1;
+            const processAlias = processIndex === -1 && isGlobalProcessExpression(memberRoot(node), context);
+            if (processIndex === -1 && !processAlias) return;
+            if (node.parent?.type === 'MemberExpression' && node.parent.object === node
+              && (memberPath(node.parent)?.includes('process')
+                || isGlobalProcessExpression(memberRoot(node.parent), context))) return;
+            const processRootIndex = processIndex === -1 ? 0 : processIndex;
+            const key = chain[processRootIndex + 2];
+            const safe = chain[processRootIndex + 1] === 'env'
+              && chain.length === processRootIndex + 3
               && (key === 'NODE_ENV' || (typeof key === 'string' && key.startsWith('NEXT_PUBLIC_')));
             if (!safe) context.report({ node, messageId: 'privateEnv' });
           },
