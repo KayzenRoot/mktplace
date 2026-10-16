@@ -63,6 +63,7 @@ test('retains baseline React, Hooks, TypeScript and JSX accessibility severities
   assert.equal(severity(config, 'mktplace/no-next-document-import'), 2);
   assert.equal(severity(config, 'mktplace/no-html-head'), 1);
   assert.equal(severity(config, 'mktplace/no-sync-script'), 2);
+  assert.equal(severity(config, 'mktplace/no-inline-script-id'), 2);
   assert.equal(severity(config, 'mktplace/no-async-client-component'), 1);
   assert.equal(severity(config, 'mktplace/no-server-only-imports-in-client'), 2);
   assert.equal(severity(config, 'mktplace/no-server-env-in-client'), 2);
@@ -125,6 +126,18 @@ test('enforces core Next image, internal-link and App Router component guidance'
   assert.ok(ids.includes('mktplace/no-next-document-import'), ids.join(', '));
   assert.ok(ids.includes('mktplace/no-html-head'), ids.join(', '));
   assert.ok(ids.includes('mktplace/no-sync-script'), ids.join(', '));
+
+  const scriptIds = await ruleIds(`
+    import Script from 'next/script';
+    export function Broken() { return <Script>window.alert('missing id');</Script>; }
+  `);
+  assert.ok(scriptIds.includes('mktplace/no-inline-script-id'), scriptIds.join(', '));
+
+  const identifiedScriptIds = await ruleIds(`
+    import Script from 'next/script';
+    export function Valid() { return <Script id="notice-script">window.alert('identified');</Script>; }
+  `);
+  assert.ok(!identifiedScriptIds.includes('mktplace/no-inline-script-id'), identifiedScriptIds.join(', '));
 
   const asyncIds = await ruleIds(`
     'use client';

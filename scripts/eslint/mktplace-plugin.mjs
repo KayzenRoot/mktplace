@@ -214,6 +214,60 @@ const plugin = {
         };
       },
     },
+    'no-inline-script-id': {
+      meta: {
+        type: 'problem',
+        docs: { description: 'Require an id on next/script components with inline content.' },
+        schema: [],
+        messages: { scriptId: '`next/script` components with inline content must specify an `id` attribute.' },
+      },
+      create(context) {
+        let nextScriptImportName;
+        return {
+          ImportDeclaration(node) {
+            if (node.source.value !== 'next/script') return;
+            const defaultSpecifier = node.specifiers.find((specifier) => specifier.type === 'ImportDefaultSpecifier');
+            if (defaultSpecifier) nextScriptImportName = defaultSpecifier.local.name;
+          },
+          JSXElement(node) {
+            if (node.openingElement.name.type !== 'JSXIdentifier'
+              || node.openingElement.name.name !== nextScriptImportName) return;
+
+            const attributeNames = new Set();
+            let hasUnknownSpread = false;
+            for (const attribute of node.openingElement.attributes) {
+              if (attribute.type === 'JSXAttribute') {
+                if (attribute.name.type === 'JSXIdentifier') attributeNames.add(attribute.name.name);
+                continue;
+              }
+
+              const properties = attribute.argument?.type === 'ObjectExpression'
+                ? attribute.argument.properties
+                : undefined;
+              if (!properties) {
+                hasUnknownSpread = true;
+                break;
+              }
+              for (const property of properties) {
+                if (property.type !== 'Property' || property.computed) {
+                  hasUnknownSpread = true;
+                  break;
+                }
+                const name = property.key.type === 'Identifier' ? property.key.name : property.key.value;
+                if (typeof name === 'string') attributeNames.add(name);
+              }
+              if (hasUnknownSpread) break;
+            }
+
+            if (hasUnknownSpread) return;
+            const hasInlineContent = node.children.length > 0 || attributeNames.has('dangerouslySetInnerHTML');
+            if (hasInlineContent && !attributeNames.has('id')) {
+              context.report({ node, messageId: 'scriptId' });
+            }
+          },
+        };
+      },
+    },
     'no-async-client-component': {
       meta: {
         type: 'problem',

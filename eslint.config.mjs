@@ -58,6 +58,7 @@ export default defineConfig([
       'mktplace/no-next-document-import': 'error',
       'mktplace/no-html-head': 'warn',
       'mktplace/no-sync-script': 'error',
+      'mktplace/no-inline-script-id': 'error',
       'mktplace/no-async-client-component': 'warn',
       'mktplace/no-server-only-imports-in-client': 'error',
       'mktplace/no-server-env-in-client': 'error',
